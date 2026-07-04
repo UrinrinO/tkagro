@@ -1,0 +1,237 @@
+/**
+ * TKAG-16: ProductCard styles — follows BRAND.md design system tokens.
+ * All colours, typography, and spacing use CSS custom properties only.
+ */
+
+/* ── Card shell ── */
+.card {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-accent-pale, #fbf5e0);
+  border-radius: 1rem;
+  overflow: hidden;
+  cursor: pointer;
+  outline: none;
+
+  /* Subtle default shadow */
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+
+  /* Lift on hover */
+  transition:
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+
+.card:hover,
+.card:focus-visible {
+  box-shadow: var(
+    --shadow-lg,
+    0 10px 30px rgba(0, 0, 0, 0.14)
+  );
+  transform: translateY(-3px);
+}
+
+/* ── Image ── */
+.imageWrapper {
+  position: relative;
+  width: 100%;
+  /* Square crop */
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  border-radius: 1rem 1rem 0 0;
+  background-color: var(--color-light-grey, #f9fafb);
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  /* Smooth zoom on hover for a premium feel */
+  transition: transform 0.35s ease;
+}
+
+.card:hover .image {
+  transform: scale(1.04);
+}
+
+/* ── Badges ── */
+.badgeStack {
+  position: absolute;
+  top: var(--space-3, 0.75rem);
+  right: var(--space-3, 0.75rem);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1, 0.25rem);
+  align-items: flex-end;
+  pointer-events: none;
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  font-family: var(--font-body, "Inter", sans-serif);
+  font-size: var(--text-xs, 0.75rem);
+  font-weight: var(--font-semibold, 600);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  line-height: 1.4;
+  white-space: nowrap;
+}
+
+.badgeNew {
+  background-color: var(--color-accent, #c9a84c);
+  color: var(--color-white, #ffffff);
+}
+
+.badgeBestseller {
+  background-color: var(--color-primary, #2d5016);
+  color: var(--color-white, #ffffff);
+}
+
+/* ── Card body ── */
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2, 0.5rem);
+  padding: var(--space-4, 1rem);
+  flex: 1;
+}
+
+/* ── Category pill ── */
+.categoryTag {
+  display: inline-block;
+  align-self: flex-start;
+  padding: 0.2rem 0.75rem;
+  border-radius: 999px;
+  background-color: var(--color-primary-pale, #eaf2e3);
+  color: var(--earth, var(--color-primary, #2d5016));
+  font-family: var(--font-body, "Inter", sans-serif);
+  font-size: var(--text-xs, 0.75rem);
+  font-weight: var(--font-medium, 500);
+  letter-spacing: 0.03em;
+  text-transform: capitalize;
+  line-height: 1.5;
+}
+
+/* ── Product name ── */
+.name {
+  margin: 0;
+  font-family: var(--font-heading, "Playfair Display", Georgia, serif);
+  font-size: var(--text-xl, 1.25rem);
+  font-weight: var(--font-semibold, 600);
+  line-height: var(--leading-tight, 1.25);
+  color: var(--color-dark, #1a1a1a);
+
+  /* Clamp to 2 lines to keep cards uniform height */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ── Description ── */
+.description {
+  margin: 0;
+  font-family: var(--font-body, "Inter", sans-serif);
+  font-size: var(--text-sm, 0.875rem);
+  font-weight: var(--font-normal, 400);
+  line-height: var(--leading-relaxed, 1.75);
+  color: var(--color-grey, #6b7280);
+
+  /* Clamp to 3 lines */
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+
+  /* Push footer to bottom */
+  flex: 1;
+}
+
+/* ── Footer: price + CTA ── */
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2, 0.5rem);
+  margin-top: var(--space-2, 0.5rem);
+  flex-wrap: wrap;
+}
+
+/* ── Price ── */
+.price {
+  font-family: var(--font-heading, "Playfair Display", Georgia, serif);
+  font-size: var(--text-lg, 1.125rem);
+  font-weight: var(--font-bold, 700);
+  color: var(--gold, var(--color-accent, #c9a84c));
+  white-space: nowrap;
+}
+
+/* ── Add to Cart button ── */
+.addToCartBtn {
+  /* btn-primary pattern from brand */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1, 0.25rem);
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 0.5rem;
+  background-color: var(--color-primary, #2d5016);
+  color: var(--color-white, #ffffff);
+  font-family: var(--font-body, "Inter", sans-serif);
+  font-size: var(--text-sm, 0.875rem);
+  font-weight: var(--font-semibold, 600);
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  white-space: nowrap;
+
+  transition:
+    background-color 0.18s ease,
+    opacity 0.18s ease,
+    transform 0.12s ease;
+}
+
+.addToCartBtn:hover:not(:disabled) {
+  background-color: var(--color-primary-light, #4a7c2f);
+  transform: translateY(-1px);
+}
+
+.addToCartBtn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+/* "Added ✓" confirmation state */
+.addedState {
+  background-color: var(--color-success, #16a34a);
+  cursor: default;
+  opacity: 0.9;
+}
+
+.addToCartBtn:disabled {
+  cursor: default;
+}
+
+/* ── Responsive ── */
+
+/* Tablet: slightly larger padding */
+@media (min-width: 640px) {
+  .body {
+    padding: var(--space-6, 1.5rem);
+  }
+}
+
+/* On very small screens, stack footer vertically */
+@media (max-width: 360px) {
+  .footer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .addToCartBtn {
+    width: 100%;
+    justify-content: center;
+  }
+}

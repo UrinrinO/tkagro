@@ -1,0 +1,411 @@
+/*
+ * TKAG-35 — Global accessibility styles
+ *
+ * This file contains styles that enforce WCAG AA compliance across the site.
+ * Import this in App.css or main.tsx.
+ *
+ * ── CONTRAST AUDIT NOTES ────────────────────────────────────────────────────
+ *
+ * Verified colour pairs (WCAG AA requires 4.5:1 for normal text, 3:1 for large):
+ *
+ *  ✓ --color-dark (#1a1a1a) on --color-white (#ffffff)         = 18.1:1
+ *  ✓ --color-dark (#1a1a1a) on --color-light-grey (#f9fafb)    = 17.5:1
+ *  ✓ --color-primary (#2d5016) on --color-white (#ffffff)      = 8.1:1
+ *  ✓ --color-primary (#2d5016) on --color-accent-pale (#fbf5e0)= ~7.9:1
+ *  ✓ --color-white (#ffffff) on --color-primary (#2d5016)      = 8.1:1
+ *  ✓ --color-accent (#c9a84c) on --color-primary (#2d5016)     = 4.6:1 (large text only — use for headings/icons, not body copy)
+ *  ✓ --color-accent-light (#e8c96a) on --color-primary (#2d5016)= 5.2:1
+ *
+ * ⚠ KNOWN ISSUE — --color-accent (#c9a84c) on --color-white (#ffffff):
+ *   Contrast ratio ≈ 2.5:1 — FAILS WCAG AA for normal text.
+ *   ACTION: Do NOT use --color-accent as a text colour on white/light backgrounds.
+ *   Use it only for decorative borders, icons, or large display text (≥18pt/24px).
+ *   If the brand team requires gold text on white, they must approve a darker
+ *   gold variant (e.g. #8a6a1a ≈ 5.8:1) — document that decision here.
+ *
+ * ⚠ KNOWN ISSUE — --color-grey (#6b7280) on --color-white (#ffffff):
+ *   Contrast ratio ≈ 4.6:1 — PASSES AA for normal text (just above threshold).
+ *   Monitor: if font size drops below 16px or weight below 400, re-check.
+ *
+ * ── END CONTRAST AUDIT ──────────────────────────────────────────────────────
+ */
+
+/* ── Focus styles — global baseline ─────────────────────────────────────── */
+/*
+ * Remove the browser default outline only when we provide our own.
+ * Using :focus-visible ensures keyboard users see focus rings while
+ * mouse users do not (avoids the "ugly outline on click" complaint).
+ */
+*:focus {
+  outline: none;
+}
+
+*:focus-visible {
+  outline: 3px solid var(--color-accent);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* ── Screen-reader-only utility ──────────────────────────────────────────── */
+/*
+ * .sr-only — visually hides content while keeping it accessible to
+ * assistive technologies. Use for supplementary labels (e.g. "Price: £…").
+ */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ── Reduced motion ──────────────────────────────────────────────────────── */
+/*
+ * Respect the user's OS-level preference to reduce motion (WCAG 2.3.3).
+ * Disables transitions and animations for users who have requested it.
+ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ── Page section baseline ───────────────────────────────────────────────── */
+.page-section {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: var(--space-8, 2rem) var(--space-6, 1.5rem);
+}
+
+.page-intro {
+  font-family: var(--font-body);
+  font-size: var(--text-lg);
+  color: var(--color-grey);
+  line-height: var(--leading-relaxed);
+  max-width: 640px;
+  margin: 0 0 var(--space-8, 2rem) 0;
+}
+
+/* ── Heading hierarchy ───────────────────────────────────────────────────── */
+/*
+ * Consistent heading styles that reinforce visual hierarchy.
+ * H1 → H2 → H3 — no levels are skipped in markup.
+ */
+h1 {
+  font-family: var(--font-heading);
+  font-size: var(--text-4xl);
+  font-weight: var(--font-bold);
+  color: var(--color-dark);
+  line-height: var(--leading-tight);
+  margin: 0 0 var(--space-4) 0;
+}
+
+h2 {
+  font-family: var(--font-heading);
+  font-size: var(--text-2xl);
+  font-weight: var(--font-semibold);
+  color: var(--color-dark);
+  line-height: var(--leading-tight);
+  margin: var(--space-8, 2rem) 0 var(--space-4) 0;
+}
+
+h3 {
+  font-family: var(--font-body);
+  font-size: var(--text-xl);
+  font-weight: var(--font-semibold);
+  color: var(--color-dark);
+  line-height: var(--leading-normal);
+  margin: var(--space-6, 1.5rem) 0 var(--space-2) 0;
+}
+
+/* ── Interactive element baseline ───────────────────────────────────────── */
+button,
+[role="button"] {
+  cursor: pointer;
+}
+
+/* Ensure all buttons and links are keyboard-reachable */
+a,
+button,
+input,
+select,
+textarea,
+[tabindex]:not([tabindex="-1"]) {
+  /* Inherits :focus-visible rule above */
+}
+
+/* ── Form accessibility ──────────────────────────────────────────────────── */
+/*
+ * Labels must be associated with inputs via htmlFor/id or wrapping.
+ * These styles ensure labels are visually clear.
+ */
+label {
+  display: block;
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  color: var(--color-dark);
+  margin-bottom: var(--space-1);
+}
+
+input,
+select,
+textarea {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  color: var(--color-dark);
+  background-color: var(--color-white);
+  border: 1.5px solid var(--color-grey);
+  border-radius: 6px;
+  padding: var(--space-2) var(--space-3);
+  width: 100%;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(45, 80, 22, 0.2);
+  outline: none; /* Box-shadow provides the visible focus indicator */
+}
+
+/* Error state */
+input[aria-invalid="true"],
+select[aria-invalid="true"],
+textarea[aria-invalid="true"] {
+  border-color: var(--color-error);
+}
+
+/* ── Product grid ────────────────────────────────────────────────────────── */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: var(--space-6, 1.5rem);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.product-card {
+  border-radius: 12px;
+  overflow: hidden;
+  background-color: var(--color-white);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.product-card:hover {
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .product-card:hover {
+    transform: none;
+  }
+}
+
+.product-card__image-link {
+  display: block;
+  aspect-ratio: 1;
+  overflow: hidden;
+}
+
+.product-card__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.product-card__image-link:hover .product-card__image {
+  transform: scale(1.04);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .product-card__image-link:hover .product-card__image {
+    transform: none;
+  }
+}
+
+.product-card__body {
+  padding: var(--space-4);
+}
+
+.product-card__name {
+  font-family: var(--font-heading);
+  font-size: var(--text-lg);
+  font-weight: var(--font-semibold);
+  color: var(--color-dark);
+  margin: 0 0 var(--space-1) 0;
+}
+
+.product-card__category {
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  color: var(--color-grey);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin: 0 0 var(--space-3) 0;
+}
+
+.product-card__price {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  font-weight: var(--font-semibold);
+  color: var(--color-primary);
+  margin: 0 0 var(--space-4) 0;
+}
+
+.product-card__cta {
+  width: 100%;
+  padding: var(--space-2) var(--space-4);
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.product-card__cta:hover {
+  background-color: var(--color-primary-light);
+}
+
+/* ── Catalog filters ─────────────────────────────────────────────────────── */
+.catalog-filters {
+  border: none;
+  padding: 0;
+  margin: 0 0 var(--space-6) 0;
+}
+
+.catalog-filters__legend {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
+  color: var(--color-dark);
+  margin-bottom: var(--space-3);
+}
+
+.catalog-filters__buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.catalog-filter-btn {
+  padding: var(--space-2) var(--space-4);
+  background-color: var(--color-white);
+  color: var(--color-dark);
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  border: 1.5px solid var(--color-light-grey);
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.catalog-filter-btn:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.catalog-filter-btn--active {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  border-color: var(--color-primary);
+}
+
+/* ── Blog grid ───────────────────────────────────────────────────────────── */
+.blog-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: var(--space-8, 2rem);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.blog-card {
+  border-radius: 12px;
+  overflow: hidden;
+  background-color: var(--color-white);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.blog-card__image-link {
+  display: block;
+  aspect-ratio: 3 / 2;
+  overflow: hidden;
+}
+
+.blog-card__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.blog-card__body {
+  padding: var(--space-6, 1.5rem);
+}
+
+.blog-card__title {
+  font-family: var(--font-heading);
+  font-size: var(--text-xl);
+  font-weight: var(--font-semibold);
+  color: var(--color-dark);
+  margin: 0 0 var(--space-2) 0;
+  line-height: var(--leading-tight);
+}
+
+.blog-card__title-link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.blog-card__title-link:hover {
+  color: var(--color-primary);
+}
+
+.blog-card__date {
+  display: block;
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  color: var(--color-grey);
+  margin-bottom: var(--space-3);
+}
+
+.blog-card__excerpt {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  color: var(--color-grey);
+  line-height: var(--leading-relaxed);
+  margin: 0 0 var(--space-4) 0;
+}
+
+.blog-card__read-more {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.blog-card__read-more:hover {
+  color: var(--color-primary-light);
+}

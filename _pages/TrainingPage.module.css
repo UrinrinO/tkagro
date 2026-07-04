@@ -1,0 +1,191 @@
+/* TKAG-28: Training Academy — TrainingPage styles */
+
+.page {
+  min-height: 100vh;
+  background: var(--color-light-grey);
+}
+
+/* ── Hero ── */
+.hero {
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
+  color: var(--color-white);
+  padding: 6rem var(--space-6) 5rem;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 420px;
+}
+
+.heroContent {
+  max-width: 640px;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+
+.heroEyebrow {
+  display: inline-block;
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-accent-light);
+  margin-bottom: var(--space-3);
+}
+
+.heroHeading {
+  font-family: var(--font-heading);
+  font-size: clamp(var(--text-4xl), 6vw, var(--text-5xl));
+  font-weight: var(--font-bold);
+  color: var(--color-white);
+  margin: 0 0 var(--space-4);
+  line-height: var(--leading-tight);
+}
+
+.heroSubheading {
+  font-family: var(--font-body);
+  font-size: var(--text-lg);
+  color: rgba(255, 255, 255, 0.85);
+  margin: 0 0 var(--space-8);
+  line-height: var(--leading-relaxed);
+}
+
+.heroActions {
+  display: flex;
+  gap: var(--space-4);
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.heroCta {
+  display: inline-block;
+  padding: var(--space-3) var(--space-8);
+  background: var(--color-accent);
+  color: var(--color-dark);
+  border-radius: 8px;
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  font-weight: var(--font-semibold);
+  text-decoration: none;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.heroCta:hover {
+  background: var(--color-accent-light);
+  transform: translateY(-1px);
+}
+
+.heroCtaSecondary {
+  display: inline-block;
+  padding: var(--space-3) var(--space-8);
+  background: transparent;
+  color: var(--color-white);
+  border: 2px solid rgba(255, 255, 255, 0.6);
+  border-radius: 8px;
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  font-weight: var(--font-semibold);
+  text-decoration: none;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.heroCtaSecondary:hover {
+  border-color: var(--color-white);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* Decorative botanical element */
+.heroDecoration {
+  position: absolute;
+  right: 8%;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 10rem;
+  opacity: 0.08;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* ── Container ── */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--space-8) var(--space-6);
+}
+
+/* ── Sections ── */
+.section {
+  padding: var(--space-8) 0;
+}
+
+.sectionHeader {
+  margin-bottom: var(--space-8);
+}
+
+.sectionHeading {
+  font-family: var(--font-heading);
+  font-size: var(--text-3xl);
+  font-weight: var(--font-bold);
+  color: var(--color-dark);
+  margin: 0 0 var(--space-3);
+}
+
+.sectionSubheading {
+  font-family: var(--font-body);
+  font-size: var(--text-lg);
+  color: var(--color-grey);
+  margin: 0;
+}
+
+/* ── Grid ── */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--space-6);
+}
+
+/* ── Divider ── */
+.divider {
+  border: none;
+  border-top: 1px solid #e5e7eb;
+  margin: 0;
+}
+
+/* ── Empty state ── */
+.emptyState {
+  padding: var(--space-8);
+  text-align: center;
+  background: var(--color-white);
+  border: 1px dashed #d1d5db;
+  border-radius: 12px;
+}
+
+.emptyText {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  color: var(--color-grey);
+  margin: 0;
+}
+
+/* ── Responsive ── */
+@media (max-width: 640px) {
+  .hero {
+    padding: 4rem var(--space-4) 3rem;
+    min-height: 360px;
+  }
+
+  .heroDecoration {
+    display: none;
+  }
+
+  .container {
+    padding: var(--space-6) var(--space-4);
+  }
+
+  .sectionHeading {
+    font-size: var(--text-2xl);
+  }
+}

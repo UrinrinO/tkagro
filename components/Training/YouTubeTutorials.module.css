@@ -1,0 +1,113 @@
+/* TKAG-28: Training Academy — YouTubeTutorials styles */
+
+.section {
+  padding: var(--space-8) 0;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: var(--space-8);
+}
+
+.heading {
+  font-family: var(--font-heading);
+  font-size: var(--text-3xl);
+  font-weight: var(--font-bold);
+  color: var(--color-dark);
+  margin: 0 0 var(--space-3);
+}
+
+.subheading {
+  font-family: var(--font-body);
+  font-size: var(--text-lg);
+  color: var(--color-grey);
+  margin: 0;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--space-6);
+}
+
+.embedWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.thumbnailButton {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--color-dark);
+}
+
+.thumbnailImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.thumbnailButton:hover .thumbnailImg {
+  transform: scale(1.04);
+  opacity: 0.85;
+}
+
+.playOverlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.25);
+  transition: background 0.2s ease;
+}
+
+.thumbnailButton:hover .playOverlay {
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.playIcon {
+  width: 56px;
+  height: 56px;
+  background: var(--color-primary);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-white);
+  font-size: var(--text-xl);
+  padding-left: 4px; /* optical centering for play triangle */
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.thumbnailButton:hover .playIcon {
+  transform: scale(1.1);
+  background: var(--color-primary-light);
+}
+
+.iframe {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: none;
+  border-radius: 10px;
+  display: block;
+}
+
+.videoTitle {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  color: var(--color-dark);
+  margin: 0;
+  line-height: var(--leading-normal);
+}

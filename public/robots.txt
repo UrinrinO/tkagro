@@ -1,0 +1,8 @@
+# TKAG-35 — robots.txt for T.kays Agrocosmetics
+# Allow all crawlers to index the site
+
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://www.tkaysagrocosmetics.com/sitemap.xml

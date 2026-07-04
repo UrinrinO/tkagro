@@ -1,0 +1,189 @@
+/* TKAG-24 — /skin-concerns index page styles */
+
+/* ── Page Layout ── */
+.page {
+  min-height: 100vh;
+  background-color: var(--color-light-grey);
+}
+
+/* ── Page Header ── */
+.pageHeader {
+  text-align: center;
+  padding: var(--space-8) var(--space-6) var(--space-6);
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.eyebrow {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  margin: 0 0 var(--space-3);
+}
+
+.heading {
+  font-family: var(--font-heading);
+  font-size: var(--text-4xl);
+  font-weight: var(--font-bold);
+  color: var(--color-dark);
+  margin: 0 0 var(--space-4);
+  line-height: var(--leading-tight);
+}
+
+.subheading {
+  font-family: var(--font-body);
+  font-size: var(--text-lg);
+  color: var(--color-grey);
+  margin: 0;
+  line-height: var(--leading-relaxed);
+}
+
+/* ── Concern Grid ── */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-6);
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--space-6) var(--space-6) var(--space-8);
+}
+
+@media (max-width: 1024px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .grid {
+    grid-template-columns: 1fr;
+    padding: var(--space-4);
+  }
+
+  .heading {
+    font-size: var(--text-3xl);
+  }
+}
+
+/* ── Concern Card ── */
+.card {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  min-height: 320px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  background-color: var(--color-primary);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  cursor: pointer;
+}
+
+.card:hover {
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);
+  transform: translateY(-4px);
+}
+
+/* Gradient overlay that sits above the background image */
+.cardImageWrapper {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    var(--color-primary) 0%,
+    var(--color-primary-light) 60%,
+    rgba(74, 124, 47, 0.6) 100%
+  );
+}
+
+.cardOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(26, 26, 26, 0.75) 0%,
+    rgba(26, 26, 26, 0.1) 60%,
+    transparent 100%
+  );
+}
+
+/* ── Card Content ── */
+.cardContent {
+  position: relative;
+  z-index: 1;
+  padding: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.cardName {
+  font-family: var(--font-heading);
+  font-size: var(--text-2xl);
+  font-weight: var(--font-bold);
+  color: var(--color-white);
+  margin: 0;
+  line-height: var(--leading-tight);
+}
+
+.cardDescription {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  color: rgba(255, 255, 255, 0.85);
+  margin: 0;
+  line-height: var(--leading-relaxed);
+}
+
+/* ── Card CTA ── */
+.cardCta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  align-self: flex-start;
+  padding: var(--space-2) var(--space-4);
+  background-color: var(--color-accent);
+  color: var(--color-white);
+  border-radius: 6px;
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
+  text-decoration: none;
+  transition: background-color 0.2s ease, gap 0.2s ease;
+  margin-top: var(--space-2);
+}
+
+.cardCta:hover {
+  background-color: var(--color-accent-light);
+  gap: var(--space-3);
+}
+
+.ctaArrow {
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.cardCta:hover .ctaArrow {
+  transform: translateX(3px);
+}
+
+/* ── Brand Promise Banner ── */
+.promiseBanner {
+  background-color: var(--color-primary-pale);
+  border-top: 1px solid rgba(45, 80, 22, 0.12);
+  padding: var(--space-6);
+  text-align: center;
+}
+
+.promiseText {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  color: var(--color-primary);
+  margin: 0;
+  max-width: 600px;
+  margin-inline: auto;
+  line-height: var(--leading-relaxed);
+}

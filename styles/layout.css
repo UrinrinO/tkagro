@@ -1,0 +1,185 @@
+/**
+ * layout.css
+ * TKAG-8: Responsive grid and flexbox utility classes.
+ * Uses mobile-first media queries throughout.
+ * Import after globals.css.
+ */
+
+/* ── Container ── */
+.container {
+  width: 100%;
+  max-width: 1280px;
+  margin-inline: auto;
+  /* Mobile default: 24px padding */
+  padding-inline: var(--container-pad);
+}
+
+/* Tablet (≥768px): increase padding to 32px */
+@media (min-width: 768px) {
+  .container {
+    padding-inline: var(--space-8);
+  }
+}
+
+/* Desktop (≥1024px): generous padding */
+@media (min-width: 1024px) {
+  .container {
+    padding-inline: var(--space-12);
+  }
+}
+
+/* ── Section spacing ── */
+.section {
+  padding-block: var(--space-12);
+}
+
+@media (min-width: 768px) {
+  .section {
+    padding-block: var(--space-16);
+  }
+}
+
+@media (min-width: 1024px) {
+  .section {
+    padding-block: var(--space-24);
+  }
+}
+
+/* ── Flex utilities ── */
+.flex {
+  display: flex;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.items-start {
+  align-items: flex-start;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.justify-end {
+  justify-content: flex-end;
+}
+
+.gap-2 { gap: var(--space-2); }
+.gap-3 { gap: var(--space-3); }
+.gap-4 { gap: var(--space-4); }
+.gap-6 { gap: var(--space-6); }
+.gap-8 { gap: var(--space-8); }
+
+/* ── Grid utilities ── */
+.grid {
+  display: grid;
+}
+
+/* Responsive product grid: 1 → 2 → 3 columns */
+.grid-products {
+  display: grid;
+  gap: var(--space-6);
+  /* Mobile: single column */
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 640px) {
+  .grid-products {
+    /* Tablet: 2 columns */
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .grid-products {
+    /* Desktop: 3 columns */
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-8);
+  }
+}
+
+/* Auto-fit grid (alternative to explicit breakpoints) */
+.grid-auto {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--space-6);
+}
+
+@media (min-width: 1024px) {
+  .grid-auto {
+    gap: var(--space-8);
+  }
+}
+
+/* ── Typography utilities ── */
+.text-heading {
+  font-family: var(--font-heading);
+}
+
+.text-body {
+  font-family: var(--font-body);
+}
+
+.text-accent-font {
+  font-family: var(--font-accent);
+}
+
+/* ── Visibility utilities ── */
+/* Hide on mobile, show on tablet+ */
+.hide-mobile {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .hide-mobile {
+    display: revert;
+  }
+}
+
+/* Show on mobile only */
+.show-mobile {
+  display: revert;
+}
+
+@media (min-width: 768px) {
+  .show-mobile {
+    display: none;
+  }
+}
+
+/* ── Touch target utility ── */
+/* Ensures minimum 44×44px touch target per WCAG 2.5.5 */
+.touch-target {
+  min-width: 44px;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── Aspect ratio utilities ── */
+.aspect-square {
+  aspect-ratio: 1 / 1;
+}
+
+.aspect-video {
+  aspect-ratio: 16 / 9;
+}
+
+/* ── Width utilities ── */
+.w-full { width: 100%; }
+.max-w-screen-xl { max-width: 1280px; }

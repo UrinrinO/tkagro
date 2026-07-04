@@ -1,0 +1,81 @@
+/* TKAG-26: Social Share Styles */
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.label {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
+  color: var(--color-grey);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 0.6rem 1.1rem;
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* Twitter / X */
+.btnTwitter {
+  background-color: #000;
+  color: #fff;
+}
+
+.btnTwitter:hover {
+  background-color: #333;
+}
+
+/* WhatsApp */
+.btnWhatsApp {
+  background-color: #25d366;
+  color: #fff;
+}
+
+.btnWhatsApp:hover {
+  background-color: #1ebe5d;
+}
+
+/* Copy Link */
+.btnCopy {
+  background-color: var(--color-light-grey);
+  color: var(--color-dark);
+  border: 1.5px solid #e5e7eb;
+}
+
+.btnCopy:hover {
+  background-color: var(--color-primary-pale);
+  border-color: var(--color-primary-pale);
+  color: var(--color-primary);
+}
+
+.btnCopied {
+  background-color: var(--color-primary-pale);
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}

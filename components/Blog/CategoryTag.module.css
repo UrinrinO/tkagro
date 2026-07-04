@@ -1,0 +1,48 @@
+/* TKAG-26: Category Tag Styles */
+
+.tag {
+  display: inline-block;
+  font-family: var(--font-body);
+  font-weight: var(--font-semibold);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  border-radius: 100px;
+  white-space: nowrap;
+}
+
+/* Sizes */
+.tag--sm {
+  font-size: var(--text-xs);
+  padding: 0.2rem 0.6rem;
+}
+
+.tag--md {
+  font-size: var(--text-xs);
+  padding: 0.3rem 0.75rem;
+}
+
+/* Category colour variants */
+.tag--skincare {
+  background-color: var(--color-primary-pale);
+  color: var(--color-primary);
+}
+
+.tag--mental {
+  background-color: #ede9fe; /* soft lavender */
+  color: #5b21b6;
+}
+
+.tag--selfcare {
+  background-color: var(--color-accent-pale);
+  color: #92400e;
+}
+
+.tag--brand {
+  background-color: #fce7f3; /* soft pink */
+  color: #9d174d;
+}
+
+.tag--default {
+  background-color: var(--color-light-grey);
+  color: var(--color-grey);
+}

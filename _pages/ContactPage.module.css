@@ -1,0 +1,513 @@
+/**
+ * TKAG-31 — ContactPage styles
+ * Uses brand CSS custom properties from BRAND.md
+ */
+
+/* ── Layout ── */
+
+.page {
+  background-color: var(--color-light-grey);
+  min-height: 100vh;
+  padding-bottom: var(--space-16, 4rem);
+}
+
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 var(--space-6);
+}
+
+/* ── Page Header ── */
+
+.pageHeader {
+  background: linear-gradient(
+    135deg,
+    var(--color-primary) 0%,
+    var(--color-primary-light) 100%
+  );
+  color: var(--color-white);
+  padding: 5rem var(--space-6) 4rem;
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.eyebrow {
+  font-family: var(--font-accent);
+  font-size: var(--text-sm);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-accent-light);
+  margin: 0 0 var(--space-3);
+}
+
+.heading {
+  font-family: var(--font-heading);
+  font-size: var(--text-5xl);
+  font-weight: var(--font-bold);
+  line-height: var(--leading-tight);
+  margin: 0 0 var(--space-4);
+  color: var(--color-white);
+}
+
+.subheading {
+  font-family: var(--font-body);
+  font-size: var(--text-lg);
+  color: rgba(255, 255, 255, 0.85);
+  max-width: 520px;
+  margin: 0 auto;
+  line-height: var(--leading-relaxed);
+}
+
+/* ── Content Grid ── */
+
+.contentGrid {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 2.5rem;
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .contentGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── Form Section ── */
+
+.formSection {
+  background: var(--color-white);
+  border-radius: 16px;
+  padding: 2.5rem;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.06);
+}
+
+.sectionTitle {
+  font-family: var(--font-heading);
+  font-size: var(--text-2xl);
+  font-weight: var(--font-semibold);
+  color: var(--color-dark);
+  margin: 0 0 1.75rem;
+}
+
+/* ── Form Fields ── */
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.fieldGroup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.label {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
+  color: var(--color-dark);
+  letter-spacing: 0.02em;
+}
+
+.required {
+  color: var(--color-error);
+  margin-left: 2px;
+}
+
+.input,
+.textarea {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  color: var(--color-dark);
+  background: var(--color-light-grey);
+  border: 1.5px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 0.75rem 1rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  outline: none;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.input:focus,
+.textarea:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--color-primary-pale);
+  background: var(--color-white);
+}
+
+.input:disabled,
+.textarea:disabled,
+.select:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.textarea {
+  resize: vertical;
+  min-height: 140px;
+}
+
+/* Select wrapper for custom chevron */
+.selectWrapper {
+  position: relative;
+}
+
+.select {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  color: var(--color-dark);
+  background: var(--color-light-grey);
+  border: 1.5px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 0.75rem 2.5rem 0.75rem 1rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  outline: none;
+  width: 100%;
+  box-sizing: border-box;
+  appearance: none;
+  cursor: pointer;
+}
+
+.select:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--color-primary-pale);
+  background: var(--color-white);
+}
+
+.selectChevron {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: var(--color-grey);
+  font-size: var(--text-sm);
+}
+
+/* Validation error state */
+.inputError {
+  border-color: var(--color-error) !important;
+  background: #fff5f5;
+}
+
+.fieldError {
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  color: var(--color-error);
+  font-weight: var(--font-medium);
+}
+
+/* ── Buttons ── */
+
+.btnPrimary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  font-weight: var(--font-semibold);
+  color: var(--color-white);
+  background: var(--color-primary);
+  border: none;
+  border-radius: 10px;
+  padding: 0.875rem 2rem;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.1s ease;
+  margin-top: var(--space-2);
+}
+
+.btnPrimary:hover:not(:disabled) {
+  background: var(--color-primary-light);
+  transform: translateY(-1px);
+}
+
+.btnPrimary:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.btnPrimary:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.btnSecondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
+  color: var(--color-primary);
+  background: var(--color-primary-pale);
+  border: none;
+  border-radius: 8px;
+  padding: 0.625rem 1.25rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  margin-top: var(--space-4);
+}
+
+.btnSecondary:hover {
+  background: #d4e8c4;
+}
+
+/* ── Loading Spinner ── */
+
+.spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-top-color: var(--color-white);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ── Success Card ── */
+
+.successCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 3rem 2rem;
+  gap: var(--space-3);
+}
+
+.successIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  background: var(--color-primary-pale);
+  color: var(--color-primary);
+  border-radius: 50%;
+  font-size: 1.75rem;
+  font-weight: var(--font-bold);
+}
+
+.successTitle {
+  font-family: var(--font-heading);
+  font-size: var(--text-2xl);
+  font-weight: var(--font-semibold);
+  color: var(--color-dark);
+  margin: 0;
+}
+
+.successText {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  color: var(--color-grey);
+  line-height: var(--leading-relaxed);
+  max-width: 340px;
+  margin: 0;
+}
+
+/* ── Error Banner ── */
+
+.errorBanner {
+  background: #fff5f5;
+  border: 1.5px solid var(--color-error);
+  border-radius: 10px;
+  padding: 0.875rem 1rem;
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  color: var(--color-error);
+  line-height: var(--leading-normal);
+}
+
+/* ── Info / Aside Section ── */
+
+.infoSection {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/* ── WhatsApp Card ── */
+
+.whatsappCard {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: #25d366;
+  color: var(--color-white);
+  border-radius: 16px;
+  padding: 1.25rem 1.5rem;
+  text-decoration: none;
+  transition: background 0.2s ease, transform 0.15s ease,
+    box-shadow 0.15s ease;
+  box-shadow: 0 4px 20px rgba(37, 211, 102, 0.3);
+}
+
+.whatsappCard:hover {
+  background: #1ebe5d;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(37, 211, 102, 0.4);
+}
+
+.whatsappIconWrapper {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.whatsappContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.whatsappLabel {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  font-weight: var(--font-bold);
+  line-height: var(--leading-tight);
+}
+
+.whatsappSub {
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  opacity: 0.85;
+}
+
+.whatsappArrow {
+  font-size: var(--text-xl);
+  flex-shrink: 0;
+}
+
+/* ── Response Notice ── */
+
+.responseNotice {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  background: var(--color-accent-pale);
+  border-left: 4px solid var(--color-accent);
+  border-radius: 10px;
+  padding: 1rem 1.25rem;
+}
+
+.responseIcon {
+  font-size: var(--text-xl);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.responseNotice p {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  color: var(--color-dark);
+  line-height: var(--leading-relaxed);
+  margin: 0;
+}
+
+/* ── Contact Details ── */
+
+.contactDetails {
+  background: var(--color-white);
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.detailsTitle {
+  font-family: var(--font-heading);
+  font-size: var(--text-lg);
+  font-weight: var(--font-semibold);
+  color: var(--color-dark);
+  margin: 0 0 var(--space-2);
+}
+
+.contactLink {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  color: var(--color-primary);
+  text-decoration: none;
+  font-weight: var(--font-medium);
+  transition: color 0.2s ease;
+}
+
+.contactLink:hover {
+  color: var(--color-primary-light);
+  text-decoration: underline;
+}
+
+.contactLinkIcon {
+  font-size: var(--text-base);
+}
+
+/* ── Social Links ── */
+
+.socialSection {
+  background: var(--color-white);
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+}
+
+.socialLinks {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-top: var(--space-3);
+}
+
+.socialLink {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  color: var(--color-dark);
+  text-decoration: none;
+  padding: var(--space-2) var(--space-3);
+  border-radius: 8px;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.socialLink:hover {
+  background: var(--color-primary-pale);
+  color: var(--color-primary);
+}
+
+/* ── Responsive ── */
+
+@media (max-width: 600px) {
+  .pageHeader {
+    padding: 3rem var(--space-4) 2.5rem;
+  }
+
+  .heading {
+    font-size: var(--text-4xl);
+  }
+
+  .formSection {
+    padding: 1.5rem;
+  }
+
+  .container {
+    padding: 0 var(--space-4);
+  }
+}

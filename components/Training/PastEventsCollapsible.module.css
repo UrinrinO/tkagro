@@ -1,0 +1,65 @@
+/* TKAG-28: Training Academy — PastEventsCollapsible styles */
+
+.container {
+  margin-top: var(--space-8);
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.toggle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-4) var(--space-6);
+  background: var(--color-light-grey);
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  font-weight: var(--font-semibold);
+  color: var(--color-dark);
+  transition: background 0.2s ease;
+}
+
+.toggle:hover {
+  background: #f0f0f0;
+}
+
+.toggle:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: -2px;
+}
+
+.toggleLabel {
+  font-family: var(--font-heading);
+}
+
+.chevron {
+  font-size: var(--text-lg);
+  transition: transform 0.25s ease;
+  display: inline-block;
+}
+
+.chevronOpen {
+  transform: rotate(180deg);
+}
+
+.panel {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.35s ease;
+}
+
+.panelOpen {
+  /* Large enough to show all content */
+  max-height: 2000px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--space-6);
+  padding: var(--space-6);
+}

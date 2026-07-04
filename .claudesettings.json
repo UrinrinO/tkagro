@@ -1,0 +1,14 @@
+{
+  "terminal.integrated.allowCommands": [
+    "ls",
+    "cat",
+    "pwd",
+    "git status",
+    "find",
+    "grep",
+    "du",
+    "df"
+  ],
+  "automation.noprompt.readonly": true,
+  "behavior.bash.auto_confirm_read_only": true
+}

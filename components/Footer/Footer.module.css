@@ -1,0 +1,373 @@
+/**
+ * TKAG-32: Footer component styles
+ * Uses CSS custom properties from BRAND.md design system.
+ * Layout: 4-col desktop → 2-col tablet → 1-col mobile
+ */
+
+/* ── Root / Shell ─────────────────────────────────────────────────────────── */
+
+.footer {
+  background-color: var(--color-dark, #1a1a1a);
+  color: var(--color-white, #ffffff);
+  font-family: var(--font-body, 'Inter', sans-serif);
+  width: 100%;
+}
+
+/* ── Container ────────────────────────────────────────────────────────────── */
+
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: var(--space-16, 4rem) var(--space-6, 1.5rem) var(--space-12, 3rem);
+}
+
+/* ── 4-column grid ────────────────────────────────────────────────────────── */
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-8, 2rem);
+  align-items: start;
+}
+
+/* Tablet: 2 columns */
+@media (max-width: 1024px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-10, 2.5rem) var(--space-8, 2rem);
+  }
+}
+
+/* Mobile: single column */
+@media (max-width: 640px) {
+  .grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-8, 2rem);
+  }
+
+  .container {
+    padding: var(--space-10, 2.5rem) var(--space-4, 1rem) var(--space-8, 2rem);
+  }
+}
+
+/* ── Column shared ────────────────────────────────────────────────────────── */
+
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4, 1rem);
+}
+
+.columnHeading {
+  font-family: var(--font-heading, 'Playfair Display', serif);
+  font-size: var(--text-base, 1rem);
+  font-weight: var(--font-semibold, 600);
+  color: var(--color-white, #ffffff);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin: 0 0 var(--space-2, 0.5rem);
+  padding-bottom: var(--space-2, 0.5rem);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+/* ── Column 1 — Brand ─────────────────────────────────────────────────────── */
+
+.logoLink {
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  line-height: var(--leading-tight, 1.25);
+  width: fit-content;
+}
+
+.logoText {
+  font-family: var(--font-heading, 'Playfair Display', serif);
+  font-size: var(--text-2xl, 1.5rem);
+  font-weight: var(--font-bold, 700);
+  color: var(--color-accent, #c9a84c);
+  letter-spacing: -0.01em;
+}
+
+.logoSub {
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: var(--text-xs, 0.75rem);
+  font-weight: var(--font-normal, 400);
+  color: var(--color-grey, #6b7280);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.tagline {
+  font-family: var(--font-accent, 'Cormorant Garamond', serif);
+  font-size: var(--text-lg, 1.125rem);
+  font-style: italic;
+  color: var(--color-accent-light, #e8c96a);
+  margin: 0;
+}
+
+.brandDescription {
+  font-size: var(--text-sm, 0.875rem);
+  color: var(--color-grey, #6b7280);
+  line-height: var(--leading-relaxed, 1.75);
+  margin: 0;
+}
+
+/* Social icons row */
+.socialRow {
+  display: flex;
+  gap: var(--space-3, 0.75rem);
+  flex-wrap: wrap;
+  margin-top: var(--space-2, 0.5rem);
+}
+
+.socialIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.08);
+  color: var(--color-grey, #6b7280);
+  text-decoration: none;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.socialIcon:hover,
+.socialIcon:focus-visible {
+  background-color: var(--color-accent, #c9a84c);
+  color: var(--color-dark, #1a1a1a);
+  transform: translateY(-2px);
+  outline: none;
+}
+
+.socialIcon:focus-visible {
+  outline: 2px solid var(--color-accent, #c9a84c);
+  outline-offset: 2px;
+}
+
+/* ── Columns 2 & 3 — Nav links ────────────────────────────────────────────── */
+
+.linkList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2, 0.5rem);
+}
+
+.navLink {
+  font-size: var(--text-sm, 0.875rem);
+  color: var(--color-grey, #6b7280);
+  text-decoration: none;
+  line-height: var(--leading-normal, 1.5);
+  transition: color 0.2s ease;
+  display: inline-block;
+}
+
+.navLink:hover,
+.navLink:focus-visible {
+  color: var(--color-accent, #c9a84c);
+  outline: none;
+}
+
+.navLink:focus-visible {
+  outline: 2px solid var(--color-accent, #c9a84c);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* ── Column 4 — Newsletter ────────────────────────────────────────────────── */
+
+.newsletterSubtext {
+  font-size: var(--text-sm, 0.875rem);
+  color: var(--color-grey, #6b7280);
+  line-height: var(--leading-relaxed, 1.75);
+  margin: 0;
+}
+
+.newsletterForm {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2, 0.5rem);
+  margin-top: var(--space-1, 0.25rem);
+}
+
+.newsletterInput {
+  width: 100%;
+  padding: var(--space-3, 0.75rem) var(--space-4, 1rem);
+  background-color: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 6px;
+  color: var(--color-white, #ffffff);
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: var(--text-sm, 0.875rem);
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+  box-sizing: border-box;
+}
+
+.newsletterInput::placeholder {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.newsletterInput:focus {
+  outline: none;
+  border-color: var(--color-accent, #c9a84c);
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.newsletterInput:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.newsletterButton {
+  width: 100%;
+  padding: var(--space-3, 0.75rem) var(--space-4, 1rem);
+  background-color: var(--color-accent, #c9a84c);
+  color: var(--color-dark, #1a1a1a);
+  border: none;
+  border-radius: 6px;
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: var(--text-sm, 0.875rem);
+  font-weight: var(--font-semibold, 600);
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.15s ease;
+}
+
+.newsletterButton:hover:not(:disabled) {
+  background-color: var(--color-accent-light, #e8c96a);
+  transform: translateY(-1px);
+}
+
+.newsletterButton:focus-visible {
+  outline: 2px solid var(--color-accent-light, #e8c96a);
+  outline-offset: 2px;
+}
+
+.newsletterButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Status messages */
+.successMessage {
+  font-size: var(--text-xs, 0.75rem);
+  color: var(--color-success, #16a34a);
+  line-height: var(--leading-normal, 1.5);
+  margin: 0;
+}
+
+.errorMessage {
+  font-size: var(--text-xs, 0.75rem);
+  color: var(--color-error, #dc2626);
+  line-height: var(--leading-normal, 1.5);
+  margin: 0;
+}
+
+/* ── Legal strip ──────────────────────────────────────────────────────────── */
+
+.legalStrip {
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  padding: var(--space-2, 0.5rem) var(--space-6, 1.5rem) var(--space-3, 0.75rem);
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.legalLinks {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem 0;
+}
+
+.legalItem {
+  display: flex;
+  align-items: center;
+}
+
+.legalDivider {
+  color: rgba(255, 255, 255, 0.2);
+  font-size: 0.75rem;
+  margin: 0 0.5rem;
+  user-select: none;
+}
+
+.legalLink {
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.4);
+  text-decoration: none;
+  letter-spacing: 0.02em;
+  transition: color 0.2s ease;
+  white-space: nowrap;
+}
+
+.legalLink:hover,
+.legalLink:focus-visible {
+  color: var(--color-accent, #c9a84c);
+  outline: none;
+}
+
+/* ── Bottom bar ───────────────────────────────────────────────────────────── */
+
+.bottomBar {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.bottomBarInner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: var(--space-4, 1rem) var(--space-6, 1.5rem);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-2, 0.5rem);
+}
+
+.copyright {
+  font-size: var(--text-xs, 0.75rem);
+  color: var(--color-grey, #6b7280);
+  margin: 0;
+}
+
+.madeIn {
+  font-size: var(--text-xs, 0.75rem);
+  color: var(--color-grey, #6b7280);
+  margin: 0;
+}
+
+@media (max-width: 480px) {
+  .bottomBarInner {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: var(--space-4, 1rem);
+  }
+}
+
+/* ── Accessibility utility ────────────────────────────────────────────────── */
+
+/* Visually hidden but accessible to screen readers */
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}

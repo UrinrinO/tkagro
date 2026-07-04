@@ -1,0 +1,301 @@
+/* HeroSection — editorial full-viewport, Sage-inspired */
+
+.hero {
+  position: relative;
+  width: 100%;
+  min-height: 100svh;
+  overflow: hidden;
+  background-color: #1a1a1a;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Background image ── */
+.bgWrap {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.bgImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+  display: block;
+}
+
+.bgOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.1) 0%,
+    rgba(0, 0, 0, 0.05) 35%,
+    rgba(0, 0, 0, 0.5) 70%,
+    rgba(0, 0, 0, 0.82) 100%
+  );
+}
+
+/* ── Top pill badge ── */
+.badge {
+  position: absolute;
+  top: 6.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 999px;
+  padding: 0.45rem 1.1rem;
+  color: #fff;
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.badgeDot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #c9a84c;
+  flex-shrink: 0;
+}
+
+/* ── Main content area ── */
+.content {
+  position: relative;
+  z-index: 2;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 6rem 1.5rem 2.5rem;
+}
+
+@media (min-width: 768px) {
+  .content {
+    padding: 6rem 3rem 3rem;
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+  }
+}
+
+@media (min-width: 1100px) {
+  .content {
+    padding: 6rem 5rem 3.5rem;
+  }
+}
+
+/* ── Text column ── */
+.textCol {
+  flex: 1;
+  min-width: 0;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--font-body);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #c9a84c;
+  margin-bottom: 1.1rem;
+}
+
+.eyebrow::before {
+  content: '';
+  display: block;
+  width: 28px;
+  height: 1px;
+  background: #c9a84c;
+  flex-shrink: 0;
+}
+
+.heading {
+  font-family: var(--font-heading);
+  font-size: clamp(2rem, 3.6vw, 3.8rem);
+  font-weight: 700;
+  line-height: 1.1;
+  color: #fff;
+  margin: 0 0 1.25rem;
+  letter-spacing: -0.02em;
+}
+
+.headingLine1 {
+  display: block;
+}
+
+@media (min-width: 768px) {
+  .headingLine1 {
+    white-space: nowrap;
+  }
+}
+
+.heading em {
+  font-style: italic;
+  color: #c9a84c;
+  display: block;
+}
+
+.rotatingWord {
+  display: block;
+  font-style: italic;
+  color: #c9a84c;
+  will-change: opacity;
+}
+
+.subheading {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.72);
+  line-height: 1.65;
+  margin: 0 0 2.25rem;
+  max-width: 400px;
+}
+
+/* ── CTAs ── */
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.875rem;
+  align-items: center;
+}
+
+.ctaPrimary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: #c9a84c;
+  color: #1a1a1a;
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 0.9rem 1.85rem;
+  border-radius: 999px;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.ctaPrimary:hover {
+  background: #e8c96a;
+  transform: translateY(-2px);
+}
+
+.ctaSecondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: transparent;
+  color: #fff;
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  padding: 0.9rem 1.75rem;
+  border-radius: 999px;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.ctaSecondary:hover {
+  border-color: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.07);
+}
+
+/* ── Floating product card (tablet+) ── */
+.productCol {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .productCol {
+    display: flex;
+    align-items: flex-end;
+    padding-left: 2rem;
+    flex-shrink: 0;
+  }
+}
+
+.productCard {
+  width: 200px;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  position: relative;
+  background: #1a1a1a;
+}
+
+@media (min-width: 1100px) {
+  .productCard {
+    width: 240px;
+  }
+}
+
+.productImg {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  display: block;
+}
+
+.productCardLabel {
+  padding: 0.75rem 1rem;
+  background: rgba(255, 255, 255, 0.97);
+}
+
+.productCardLabel p:first-child {
+  font-family: var(--font-body);
+  font-size: 0.65rem;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin: 0 0 0.2rem;
+}
+
+.productCardLabel p:last-child {
+  font-family: var(--font-heading);
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0;
+}
+
+/* ── Big background word ── */
+.bgWord {
+  position: relative;
+  z-index: 1;
+  font-family: var(--font-heading);
+  font-size: clamp(4.5rem, 16vw, 16rem);
+  font-weight: 700;
+  font-style: italic;
+  color: rgba(255, 255, 255, 0.055);
+  line-height: 0.88;
+  margin: 0;
+  padding: 0 1.5rem 0;
+  pointer-events: none;
+  user-select: none;
+  white-space: nowrap;
+  overflow: hidden;
+  letter-spacing: -0.03em;
+}
+
+@media (min-width: 768px) {
+  .bgWord {
+    padding: 0 3rem;
+  }
+}

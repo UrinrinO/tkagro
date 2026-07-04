@@ -1,0 +1,104 @@
+/* TKAG-14: ConcernGrid styles */
+
+.concern-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-4, 1rem);
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--space-6, 1.5rem) var(--space-8, 2rem);
+}
+
+.concern-card {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  min-height: 220px;
+  border-radius: 12px;
+  overflow: hidden;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.concern-card:hover,
+.concern-card:focus-visible {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(45, 80, 22, 0.2);
+  outline: none;
+}
+
+.concern-card:focus-visible {
+  outline: 3px solid var(--color-accent, #c9a84c);
+  outline-offset: 2px;
+}
+
+.concern-card__bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  transition: transform 0.35s ease;
+}
+
+.concern-card:hover .concern-card__bg {
+  transform: scale(1.04);
+}
+
+.concern-card__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(26, 26, 26, 0.75) 0%,
+    rgba(26, 26, 26, 0.1) 60%,
+    transparent 100%
+  );
+}
+
+.concern-card__content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: var(--space-4, 1rem) var(--space-4, 1rem);
+}
+
+.concern-card__label {
+  font-family: var(--font-heading, 'Playfair Display', Georgia, serif);
+  font-size: var(--text-lg, 1.125rem);
+  font-weight: var(--font-semibold, 600);
+  color: var(--color-white, #ffffff);
+  line-height: var(--leading-tight, 1.25);
+}
+
+.concern-card__arrow {
+  font-size: var(--text-xl, 1.25rem);
+  color: var(--color-accent, #c9a84c);
+  transition: transform 0.2s ease;
+}
+
+.concern-card:hover .concern-card__arrow {
+  transform: translateX(4px);
+}
+
+/* ── Tablet ── */
+@media (max-width: 900px) {
+  .concern-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ── Mobile ── */
+@media (max-width: 480px) {
+  .concern-grid {
+    grid-template-columns: 1fr;
+    padding: 0 var(--space-4, 1rem) var(--space-6, 1.5rem);
+  }
+
+  .concern-card {
+    min-height: 160px;
+  }
+}

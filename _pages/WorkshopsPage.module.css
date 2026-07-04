@@ -1,0 +1,115 @@
+/* TKAG-28: Training Academy — WorkshopsPage styles */
+
+.page {
+  min-height: 100vh;
+  background: var(--color-light-grey);
+}
+
+.header {
+  background: var(--color-white);
+  border-bottom: 1px solid #e5e7eb;
+  padding: var(--space-8) var(--space-6);
+}
+
+.headerContent {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.breadcrumb {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.breadcrumbLink {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+.breadcrumbLink:hover {
+  text-decoration: underline;
+}
+
+.breadcrumbSep {
+  color: var(--color-grey);
+  font-size: var(--text-sm);
+}
+
+.breadcrumbCurrent {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  color: var(--color-grey);
+}
+
+.heading {
+  font-family: var(--font-heading);
+  font-size: var(--text-4xl);
+  font-weight: var(--font-bold);
+  color: var(--color-dark);
+  margin: 0;
+}
+
+.subheading {
+  font-family: var(--font-body);
+  font-size: var(--text-lg);
+  color: var(--color-grey);
+  margin: 0;
+  max-width: 600px;
+  line-height: var(--leading-relaxed);
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--space-8) var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+
+.sectionHeading {
+  font-family: var(--font-heading);
+  font-size: var(--text-2xl);
+  font-weight: var(--font-semibold);
+  color: var(--color-dark);
+  margin: 0 0 var(--space-6);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--space-6);
+}
+
+.emptyState {
+  padding: var(--space-8);
+  text-align: center;
+  background: var(--color-white);
+  border: 1px dashed #d1d5db;
+  border-radius: 12px;
+  font-family: var(--font-body);
+  color: var(--color-grey);
+}
+
+@media (max-width: 640px) {
+  .header {
+    padding: var(--space-6) var(--space-4);
+  }
+
+  .container {
+    padding: var(--space-6) var(--space-4);
+  }
+
+  .heading {
+    font-size: var(--text-3xl);
+  }
+}

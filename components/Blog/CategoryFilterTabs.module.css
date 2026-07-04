@@ -1,0 +1,60 @@
+/* TKAG-26: Category Filter Tabs Styles */
+
+.nav {
+  width: 100%;
+  overflow-x: auto;
+  /* Hide scrollbar on mobile while keeping scroll functionality */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.nav::-webkit-scrollbar {
+  display: none;
+}
+
+.tabList {
+  display: flex;
+  gap: var(--space-2);
+  padding-bottom: var(--space-1); /* prevent clipping of focus ring */
+  min-width: max-content;
+}
+
+.tab {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 1.25rem;
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  color: var(--color-grey);
+  background-color: transparent;
+  border: 1.5px solid var(--color-light-grey);
+  border-radius: 100px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.tab:hover {
+  color: var(--color-primary);
+  border-color: var(--color-primary-pale);
+  background-color: var(--color-primary-pale);
+}
+
+.tab:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.tabActive {
+  color: var(--color-white);
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+  font-weight: var(--font-semibold);
+}
+
+.tabActive:hover {
+  color: var(--color-white);
+  background-color: var(--color-primary-light);
+  border-color: var(--color-primary-light);
+}

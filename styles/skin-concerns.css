@@ -1,0 +1,470 @@
+/**
+ * skin-concerns.css
+ * TKAG-9: SEO-optimized skin concern landing pages
+ * Styles for skin concern hub and individual concern pages
+ */
+
+/* ─── Layout Utilities ─────────────────────────────────────────────────────── */
+
+.sc-container {
+  max-width: var(--container-max, 1200px);
+  margin-inline: auto;
+  padding-inline: var(--container-pad, 1.5rem);
+}
+
+/* ─── Hub Page ─────────────────────────────────────────────────────────────── */
+
+.sc-hub-hero {
+  background-color: var(--color-primary-pale);
+  padding-block: var(--space-12, 3rem);
+  text-align: center;
+}
+
+.sc-hub-hero__heading {
+  font-family: var(--font-heading);
+  font-size: var(--text-4xl);
+  font-weight: var(--font-bold);
+  color: var(--color-dark);
+  line-height: var(--leading-tight);
+  margin-bottom: var(--space-4);
+}
+
+.sc-hub-hero__subheading {
+  font-family: var(--font-body);
+  font-size: var(--text-lg);
+  color: var(--color-grey);
+  max-width: 600px;
+  margin-inline: auto;
+}
+
+.sc-hub-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-8, 2rem);
+  padding-block: var(--space-12, 3rem);
+}
+
+@media (max-width: 640px) {
+  .sc-hub-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .sc-hub-hero__heading {
+    font-size: var(--text-3xl);
+  }
+}
+
+.sc-hub-card {
+  background-color: var(--color-white);
+  border: 1px solid var(--color-primary-pale);
+  border-radius: var(--radius-md, 0.5rem);
+  padding: var(--space-6, 1.5rem);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.sc-hub-card:hover {
+  box-shadow: 0 8px 24px rgba(45, 80, 22, 0.1);
+  transform: translateY(-2px);
+}
+
+.sc-hub-card__icon {
+  font-size: var(--text-3xl);
+  margin-bottom: var(--space-3);
+  display: block;
+}
+
+.sc-hub-card__heading {
+  font-family: var(--font-heading);
+  font-size: var(--text-2xl);
+  font-weight: var(--font-semibold);
+  color: var(--color-dark);
+  margin-bottom: var(--space-3);
+}
+
+.sc-hub-card__description {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  color: var(--color-grey);
+  line-height: var(--leading-relaxed);
+  margin-bottom: var(--space-6);
+}
+
+/* ─── Hero Component ───────────────────────────────────────────────────────── */
+
+.sc-hero {
+  position: relative;
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background-color: var(--color-primary-pale);
+}
+
+.sc-hero--with-image {
+  background-color: var(--color-dark);
+}
+
+.sc-hero__bg-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.35;
+}
+
+.sc-hero__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(45, 80, 22, 0.6) 0%,
+    rgba(26, 26, 26, 0.4) 100%
+  );
+}
+
+.sc-hero__content {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding-inline: var(--container-pad, 1.5rem);
+  max-width: 800px;
+}
+
+.sc-hero__accent-bar {
+  width: 80px;
+  height: 4px;
+  background-color: var(--color-accent);
+  margin-inline: auto;
+  margin-bottom: var(--space-6);
+  border-radius: 2px;
+}
+
+.sc-hero__title {
+  font-family: var(--font-heading);
+  font-size: var(--text-5xl);
+  font-weight: var(--font-bold);
+  color: var(--color-dark);
+  line-height: var(--leading-tight);
+  margin-bottom: var(--space-6);
+}
+
+.sc-hero--with-image .sc-hero__title {
+  color: var(--color-white);
+}
+
+.sc-hero__description {
+  font-family: var(--font-body);
+  font-size: var(--text-lg);
+  color: var(--color-grey);
+  max-width: 600px;
+  margin-inline: auto;
+  line-height: var(--leading-relaxed);
+}
+
+.sc-hero--with-image .sc-hero__description {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+@media (max-width: 768px) {
+  .sc-hero__title {
+    font-size: var(--text-3xl);
+  }
+
+  .sc-hero__description {
+    font-size: var(--text-base);
+  }
+}
+
+/* ─── Section Spacing ──────────────────────────────────────────────────────── */
+
+.sc-section {
+  padding-block: var(--space-12, 3rem);
+}
+
+.sc-section__heading {
+  font-family: var(--font-heading);
+  font-size: var(--text-3xl);
+  font-weight: var(--font-bold);
+  color: var(--color-dark);
+  margin-bottom: var(--space-8);
+  line-height: var(--leading-tight);
+}
+
+.sc-section__heading--centered {
+  text-align: center;
+}
+
+/* ─── Educational Section ──────────────────────────────────────────────────── */
+
+.sc-education__body {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  color: var(--color-dark);
+  line-height: var(--leading-relaxed);
+  max-width: 720px;
+}
+
+.sc-education__body p + p {
+  margin-top: var(--space-4);
+}
+
+/* ─── Ingredients Section ──────────────────────────────────────────────────── */
+
+.sc-ingredients-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-6, 1.5rem);
+}
+
+@media (max-width: 640px) {
+  .sc-ingredients-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.sc-ingredient-card {
+  background-color: var(--color-primary-pale);
+  border-radius: var(--radius-md, 0.5rem);
+  padding: var(--space-6, 1.5rem);
+  border-left: 3px solid var(--color-primary);
+}
+
+.sc-ingredient-card__name {
+  font-family: var(--font-heading);
+  font-size: var(--text-xl);
+  font-weight: var(--font-semibold);
+  color: var(--color-primary);
+  margin-bottom: var(--space-3);
+}
+
+.sc-ingredient-card__description {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  color: var(--color-dark);
+  line-height: var(--leading-relaxed);
+}
+
+/* ─── Products Grid ────────────────────────────────────────────────────────── */
+
+.sc-products-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-8, 2rem);
+}
+
+@media (max-width: 1024px) {
+  .sc-products-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .sc-products-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.sc-product-card {
+  background-color: var(--color-white);
+  border-radius: var(--radius-md, 0.5rem);
+  overflow: hidden;
+  border: 1px solid var(--color-primary-pale);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.sc-product-card:hover {
+  box-shadow: 0 8px 24px rgba(45, 80, 22, 0.12);
+  transform: translateY(-3px);
+}
+
+.sc-product-card__image-wrapper {
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  background-color: var(--color-light-grey);
+}
+
+.sc-product-card__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.sc-product-card:hover .sc-product-card__image {
+  transform: scale(1.04);
+}
+
+.sc-product-card__body {
+  padding: var(--space-4, 1rem);
+}
+
+.sc-product-card__tag {
+  display: inline-block;
+  background-color: var(--color-primary-pale);
+  color: var(--color-primary);
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  font-weight: var(--font-medium);
+  padding: var(--space-1) var(--space-2);
+  border-radius: 999px;
+  margin-bottom: var(--space-2);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.sc-product-card__name {
+  font-family: var(--font-heading);
+  font-size: var(--text-xl);
+  font-weight: var(--font-semibold);
+  color: var(--color-dark);
+  margin-bottom: var(--space-2);
+  line-height: var(--leading-tight);
+}
+
+.sc-product-card__description {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  color: var(--color-grey);
+  line-height: var(--leading-relaxed);
+  margin-bottom: var(--space-4);
+}
+
+.sc-product-card__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.sc-product-card__price {
+  font-family: var(--font-heading);
+  font-size: var(--text-xl);
+  font-weight: var(--font-bold);
+  color: var(--color-primary);
+}
+
+.sc-products-empty {
+  grid-column: 1 / -1;
+  text-align: center;
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  color: var(--color-grey);
+  padding-block: var(--space-12);
+}
+
+/* ─── CTA Section ──────────────────────────────────────────────────────────── */
+
+.sc-cta {
+  background-color: var(--color-accent-pale);
+  padding-block: var(--space-12, 3rem);
+  text-align: center;
+}
+
+.sc-cta__heading {
+  font-family: var(--font-heading);
+  font-size: var(--text-2xl);
+  font-weight: var(--font-bold);
+  color: var(--color-dark);
+  margin-bottom: var(--space-4);
+}
+
+.sc-cta__body {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  color: var(--color-grey);
+  margin-bottom: var(--space-8);
+  max-width: 480px;
+  margin-inline: auto;
+  line-height: var(--leading-relaxed);
+}
+
+/* ─── Buttons ──────────────────────────────────────────────────────────────── */
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
+  padding: var(--space-3) var(--space-6);
+  border-radius: var(--radius-md, 0.5rem);
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.2s ease;
+  white-space: nowrap;
+}
+
+.btn-primary:hover {
+  background-color: var(--color-primary-light);
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  color: var(--color-primary);
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
+  padding: var(--space-3) var(--space-6);
+  border-radius: var(--radius-md, 0.5rem);
+  border: 2px solid var(--color-primary);
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.btn-secondary:hover {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+}
+
+.btn-accent {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-accent);
+  color: var(--color-dark);
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
+  padding: var(--space-3) var(--space-8);
+  border-radius: var(--radius-md, 0.5rem);
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.2s ease;
+}
+
+.btn-accent:hover {
+  background-color: var(--color-accent-light);
+}
+
+/* ─── Breadcrumb ───────────────────────────────────────────────────────────── */
+
+.sc-breadcrumb {
+  padding-block: var(--space-4);
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  color: var(--color-grey);
+}
+
+.sc-breadcrumb a {
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+.sc-breadcrumb a:hover {
+  text-decoration: underline;
+}
+
+.sc-breadcrumb__separator {
+  margin-inline: var(--space-2);
+}

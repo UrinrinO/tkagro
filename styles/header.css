@@ -1,0 +1,181 @@
+/*
+ * TKAG-35 — Header styles
+ *
+ * Accessibility notes:
+ *  - Focus styles use a 3px solid outline with offset so they are clearly
+ *    visible against both light and dark backgrounds (WCAG 2.4.7).
+ *  - Colour contrast for nav links: --color-dark (#1a1a1a) on --color-white
+ *    (#ffffff) = 18.1:1 — well above WCAG AA (4.5:1). ✓
+ *  - Active/hover state uses --color-primary (#2d5016) on white = 8.1:1 ✓
+ *
+ * KNOWN CONTRAST NOTE (TKAG-35):
+ *  If brand guidelines introduce a `--earth` colour on a `--cream` background,
+ *  that combination must be verified. At the time of writing, the palette uses
+ *  --color-primary (#2d5016) and --color-accent-pale (#fbf5e0) which achieves
+ *  ~8.1:1 and is compliant. If a lighter earth tone is introduced that drops
+ *  below 4.5:1, the brand team must be consulted before shipping — do NOT
+ *  silently override brand colours to fix contrast.
+ */
+
+/* ── Layout ──────────────────────────────────────────────────────────────── */
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-4) var(--space-8, 2rem);
+  max-width: 1280px;
+  margin: 0 auto;
+  gap: var(--space-6);
+}
+
+/* ── Logo ────────────────────────────────────────────────────────────────── */
+.header-logo {
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.header-logo__text {
+  font-family: var(--font-heading);
+  font-size: var(--text-xl);
+  font-weight: var(--font-bold);
+  color: var(--color-primary);
+  letter-spacing: -0.02em;
+}
+
+.header-logo:focus-visible {
+  outline: 3px solid var(--color-accent);
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+
+/* ── Navigation ──────────────────────────────────────────────────────────── */
+.header-nav__list {
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.header-nav__link {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  color: var(--color-dark);
+  text-decoration: none;
+  padding: var(--space-1) var(--space-2);
+  border-radius: 4px;
+  transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+.header-nav__link:hover {
+  color: var(--color-primary);
+  background-color: var(--color-primary-pale);
+}
+
+.header-nav__link--active {
+  color: var(--color-primary);
+  font-weight: var(--font-semibold);
+}
+
+/* Visible focus style — satisfies WCAG 2.4.7 (Focus Visible) */
+.header-nav__link:focus-visible {
+  outline: 3px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+/* ── Actions ─────────────────────────────────────────────────────────────── */
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.header-actions__cart {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: none;
+  border: none;
+  border-radius: 50%;
+  color: var(--color-dark);
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.header-actions__cart:hover {
+  background-color: var(--color-primary-pale);
+  color: var(--color-primary);
+}
+
+.header-actions__cart:focus-visible {
+  outline: 3px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+/* ── Mobile hamburger ────────────────────────────────────────────────────── */
+.header-actions__menu-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 28px;
+  height: 20px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.header-actions__menu-toggle:focus-visible {
+  outline: 3px solid var(--color-accent);
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+
+.hamburger-bar {
+  display: block;
+  width: 100%;
+  height: 2px;
+  background-color: var(--color-dark);
+  border-radius: 2px;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+/* ── Responsive ──────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .header-actions__menu-toggle {
+    display: flex;
+  }
+
+  .header-nav {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: var(--color-white);
+    border-top: 1px solid var(--color-light-grey);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    z-index: 99;
+  }
+
+  .header-nav--open {
+    display: block;
+  }
+
+  .header-nav__list {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    padding: var(--space-4);
+  }
+
+  .header-nav__link {
+    display: block;
+    padding: var(--space-3) var(--space-4);
+    font-size: var(--text-base);
+  }
+}

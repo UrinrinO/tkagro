@@ -1,0 +1,76 @@
+/**
+ * ProductGrid.module.css
+ * TKAG-8: Responsive grid layout for product listings.
+ * Mobile-first: 1 col → 2 col (640px) → 3 col (1024px)
+ */
+
+.section {
+  width: 100%;
+}
+
+.heading {
+  font-family: var(--font-heading);
+  font-size: var(--text-2xl);
+  font-weight: var(--font-bold);
+  color: var(--color-dark);
+  margin-bottom: var(--space-8);
+  line-height: var(--leading-tight);
+}
+
+@media (min-width: 768px) {
+  .heading {
+    font-size: var(--text-3xl);
+  }
+}
+
+/* ── Responsive grid ── */
+.grid {
+  display: grid;
+  /* Mobile: single column */
+  grid-template-columns: 1fr;
+  gap: var(--space-6);
+}
+
+@media (min-width: 640px) {
+  .grid {
+    /* Tablet: 2 columns */
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .grid {
+    /* Desktop: 3 columns */
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-8);
+  }
+}
+
+/* ── Skeleton loader cards ── */
+.skeleton {
+  border-radius: var(--radius-lg);
+  background: linear-gradient(
+    90deg,
+    var(--color-light-grey) 25%,
+    #e5e7eb 50%,
+    var(--color-light-grey) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  /* Match approximate card height: square image + content */
+  aspect-ratio: 3 / 4;
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ── Empty state ── */
+.empty {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  color: var(--color-grey);
+  text-align: center;
+  padding-block: var(--space-16);
+}
