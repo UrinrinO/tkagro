@@ -66,13 +66,13 @@ const SkinConcernsIndexPage: React.FC = () => {
             src={heroImg}
             alt="Diverse hands and skin tones — T.kays skincare for everyone"
             className="absolute inset-0 w-full h-full object-cover object-center"
-            fetchpriority="high"
+            fetchPriority="high"
             onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
           />
           <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/30 to-black/70" />
 
-          <nav className="absolute top-24 left-6 lg:left-16 z-10" aria-label="Breadcrumb">
-            <ol className="flex items-center gap-2 text-white/70 text-xs font-medium">
+          <nav className="absolute top-24 left-6 lg:left-16 z-20" aria-label="Breadcrumb">
+            <ol className="flex items-center gap-2 text-white text-xs font-medium [text-shadow:0_1px_4px_rgba(0,0,0,0.9)]">
               <li><Link href="/" className="hover:text-white transition-colors">Home</Link></li>
               <li aria-hidden="true" className="opacity-40">/</li>
               <li className="text-white" aria-current="page">Skin Concerns</li>

@@ -14,17 +14,12 @@ const nextConfig = {
     ],
   },
   webpack(config) {
-    // Replace Next.js's image loader with webpack 5's asset/resource so that
-    // importing local images returns a URL string (matching Vite's behaviour).
-    // This lets the many <img src={importedImage}> usages work without changes.
-    config.module.rules = config.module.rules.map((rule) => {
-      if (rule.oneOf) {
-        rule.oneOf = rule.oneOf.filter(
-          (r) => !String(r.loader ?? '').includes('next-image-loader'),
-        );
-      }
-      return rule;
-    });
+    // In Next.js 14, next-image-loader is a TOP-LEVEL rule in config.module.rules
+    // (spread in from the images block), not nested inside a oneOf. Filter it
+    // directly, then replace with asset/resource so imports return URL strings.
+    config.module.rules = config.module.rules.filter(
+      (rule) => !(rule && typeof rule === 'object' && rule.loader === 'next-image-loader'),
+    );
 
     config.module.rules.push({
       test: /\.(png|jpe?g|gif|webp|bmp|ico)$/i,

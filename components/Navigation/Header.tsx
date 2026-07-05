@@ -53,7 +53,7 @@ const Header: React.FC = () => {
             <img
               src={logoSrc}
               alt="T.kays Agrocosmetics"
-              className="h-11 w-auto object-contain"
+              className={`h-11 w-auto object-contain transition-all duration-300 ${!solid ? 'brightness-0 invert' : ''}`}
             />
           </Link>
 

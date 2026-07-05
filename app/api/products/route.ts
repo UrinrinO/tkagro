@@ -31,8 +31,18 @@ export async function GET(request: NextRequest) {
   else query = query.order('is_best_seller', { ascending: false });
   query = query.range((pageNum - 1) * limitNum, pageNum * limitNum - 1);
 
-  const { data: products, error, count } = await query;
-  if (error) return NextResponse.json({ success: false, message: error.message }, { status: 500 });
+  let data_result: Awaited<typeof query>;
+  try {
+    data_result = await query;
+  } catch (e: any) {
+    console.error('[products] thrown:', e.message, 'cause:', e.cause?.message, e.cause?.code);
+    return NextResponse.json({ success: false, message: e.message, cause: e.cause?.message, causeCode: e.cause?.code }, { status: 500 });
+  }
+  const { data: products, error, count } = data_result;
+  if (error) {
+    console.error('[products] supabase error:', error.message, (error as any).cause?.message);
+    return NextResponse.json({ success: false, message: error.message, code: error.code, cause: (error as any).cause?.message }, { status: 500 });
+  }
   return NextResponse.json({
     success: true,
     data: { products: (products ?? []).map(toDTO) },
