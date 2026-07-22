@@ -47,11 +47,20 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, message: 'Failed to save order' }, { status: 500 });
     }
 
-    sendOrderConfirmation({
-      orderNumber, customerName: customer.name, customerEmail: customer.email,
-      items: lineItems.map((i: any) => ({ name: i.name, qty: i.qty, price: `£${i.price.toFixed(2)}` })),
-      total: `£${total.toFixed(2)}`, shippingAddress,
-    }).catch((err) => console.error('[resend] confirmation email failed:', err));
+    const { data: notifSettings } = await supabase
+      .from('content_blocks')
+      .select('value')
+      .eq('key', 'settings.notifications')
+      .single();
+    const orderConfirmEnabled = (notifSettings?.value as any)?.orderConfirm !== false;
+
+    if (orderConfirmEnabled) {
+      sendOrderConfirmation({
+        orderNumber, customerName: customer.name, customerEmail: customer.email,
+        items: lineItems.map((i: any) => ({ name: i.name, qty: i.qty, price: `£${i.price.toFixed(2)}` })),
+        total: `£${total.toFixed(2)}`, shippingAddress,
+      }).catch((err) => console.error('[resend] confirmation email failed:', err));
+    }
 
     return NextResponse.json({ success: true, data: { order } }, { status: 201 });
   } catch (err: any) {

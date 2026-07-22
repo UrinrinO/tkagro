@@ -5,6 +5,7 @@ const ALLOWED_KEYS = new Set([
   'homepage.hero', 'homepage.trust_strip', 'homepage.why_tkays', 'homepage.newsletter',
   'about.brand_story', 'about.founder', 'about.balanced_wellness', 'about.vhon', 'about.dice',
   'testimonials', 'faqs',
+  'settings.store_info', 'settings.notifications',
 ]);
 
 async function requireAdmin(request: NextRequest) {
