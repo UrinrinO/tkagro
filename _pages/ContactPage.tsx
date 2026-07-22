@@ -11,7 +11,7 @@
  * - Response time notice
  */
 
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import styles from "./ContactPage.module.css";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -47,9 +47,6 @@ const SUBJECT_OPTIONS: SubjectOption[] = [
   "Wholesale",
   "Press",
 ];
-
-const WHATSAPP_NUMBER = "233XXXXXXXXX"; // Replace with actual number
-const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}`;
 
 const SOCIAL_LINKS = [
   {
@@ -123,9 +120,9 @@ const FieldError: React.FC<FieldErrorProps> = ({ message }) => {
 
 // ─── WhatsApp CTA Card ────────────────────────────────────────────────────────
 
-const WhatsAppCard: React.FC = () => (
+const WhatsAppCard: React.FC<{ whatsappUrl: string }> = ({ whatsappUrl }) => (
   <a
-    href={WHATSAPP_URL}
+    href={whatsappUrl}
     target="_blank"
     rel="noopener noreferrer"
     className={styles.whatsappCard}
@@ -211,6 +208,25 @@ const SocialIcon: React.FC<{ icon: string }> = ({ icon }) => {
 // ─── Main Component ───────────────────────────────────────────────────────────
 
 const ContactPage: React.FC = () => {
+  const [contactEmail, setContactEmail] = useState("hello@tkaysagrocosmetics.com");
+  const [contactPhone, setContactPhone] = useState("233XXXXXXXXX");
+
+  useEffect(() => {
+    fetch("/api/content/settings.store_info")
+      .then((r) => (r.ok ? r.json() : null))
+      .then((json) => {
+        const value = json?.data?.value;
+        if (value?.contactEmail) setContactEmail(value.contactEmail);
+        if (value?.contactPhone) setContactPhone(value.contactPhone);
+      })
+      .catch(() => {
+        // Keep the defaults above — this is a non-critical enhancement fetch,
+        // not something that should block or error the Contact page.
+      });
+  }, []);
+
+  const whatsappUrl = `https://wa.me/${contactPhone}`;
+
   const [formValues, setFormValues] =
     useState<ContactFormState>(INITIAL_FORM_STATE);
   const [errors, setErrors] = useState<FormErrors>({});
@@ -462,7 +478,7 @@ const ContactPage: React.FC = () => {
           {/* ── Right Column: Info ── */}
           <aside className={styles.infoSection} aria-label="Contact information">
             {/* WhatsApp CTA */}
-            <WhatsAppCard />
+            <WhatsAppCard whatsappUrl={whatsappUrl} />
 
             {/* Response time notice */}
             <div className={styles.responseNotice} role="note">
@@ -480,17 +496,17 @@ const ContactPage: React.FC = () => {
               <h3 className={styles.detailsTitle}>Contact Details</h3>
 
               <a
-                href="mailto:hello@tkaysagrocosmetics.com"
+                href={`mailto:${contactEmail}`}
                 className={styles.contactLink}
               >
                 <span className={styles.contactLinkIcon} aria-hidden="true">
                   ✉
                 </span>
-                hello@tkaysagrocosmetics.com
+                {contactEmail}
               </a>
 
               <a
-                href={WHATSAPP_URL}
+                href={whatsappUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className={styles.contactLink}
@@ -498,7 +514,7 @@ const ContactPage: React.FC = () => {
                 <span className={styles.contactLinkIcon} aria-hidden="true">
                   📱
                 </span>
-                +233 XX XXX XXXX
+                +{contactPhone}
               </a>
             </div>
 
