@@ -22,8 +22,10 @@ import WhyTkaysSection from '@/components/WhyTkaysSection';
 import TestimonialsSection from '@/components/TestimonialsSection';
 import CommunityFeed from '@/components/CommunityFeed';
 import NewsletterSection from '@/components/NewsletterSection';
+import { useHomepageContent } from '@/hooks/useHomepageContent';
 
 const HomePage: React.FC = () => {
+  const content = useHomepageContent();
   return (
     <>
       <PageSEO
@@ -32,7 +34,7 @@ const HomePage: React.FC = () => {
         canonicalPath="/"
       />
 
-      <HeroSection />
+      <HeroSection content={content.hero} />
       <TrustStrip />
       <ConcernGrid />
       <BestSellersSection />

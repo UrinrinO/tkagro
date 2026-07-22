@@ -8,9 +8,7 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import styles from "./HeroSection.module.css";
-
-import heroPoster from "../assets/images/hero.jpg";
-const heroVideo = '/hero.mp4';
+import type { HeroContent } from "@/hooks/useHomepageContent";
 
 import productImg1 from "../assets/images/product-mockups/serum-pump-hand.png";
 import productImg2 from "../assets/images/product-mockups/jar-dry-botanicals.png";
@@ -33,7 +31,16 @@ const PRODUCTS = [
   { img: productImg4, label: "Fan Favourite", name: "Herbal Black Soap" },
 ];
 
-const HeroSection: React.FC = () => {
+const HeroSection: React.FC<{ content?: Partial<HeroContent> }> = ({ content }) => {
+  const headline = content?.headline || "Potent African skincare for";
+  const subheadline =
+    content?.subheadline ||
+    "Vegan · Herbal · Organic · Natural. Every formula rooted in botanical wisdom — made for every skin tone, every body.";
+  const ctaText = content?.ctaText || "Shop Now";
+  const ctaUrl = content?.ctaUrl || "/catalog";
+  const secondaryCtaText = content?.secondaryCtaText || "Explore Skin Concerns";
+  const secondaryCtaUrl = content?.secondaryCtaUrl || "/skin-concerns";
+
   const [wordIdx, setWordIdx] = useState(0);
   const [productIdx, setProductIdx] = useState(0);
   const [fading, setFading] = useState(false);
@@ -67,17 +74,8 @@ const HeroSection: React.FC = () => {
 
   return (
     <section className={styles.hero} aria-label="Hero">
-      {/* Background image + overlay */}
+      {/* Background gradient + overlay (placeholder until licensed hero media is supplied) */}
       <div className={styles.bgWrap} aria-hidden="true">
-        <video
-          className={styles.bgImage}
-          src={heroVideo}
-          poster={heroPoster}
-          autoPlay
-          muted
-          loop
-          playsInline
-        />
         <div className={styles.bgOverlay} />
       </div>
 
@@ -95,7 +93,7 @@ const HeroSection: React.FC = () => {
 
           <h1 className={styles.heading}>
             <span className={styles.headingLine1}>
-              Potent African skincare for
+              {headline}
             </span>
             <em
               className={styles.rotatingWord}
@@ -109,13 +107,12 @@ const HeroSection: React.FC = () => {
           </h1>
 
           <p className={styles.subheading}>
-            Vegan · Herbal · Organic · Natural. Every formula rooted in
-            botanical wisdom — made for every skin tone, every body.
+            {subheadline}
           </p>
 
           <div className={styles.actions}>
-            <Link href="/catalog" className={styles.ctaPrimary}>
-              Shop Now
+            <Link href={ctaUrl} className={styles.ctaPrimary}>
+              {ctaText}
               <svg
                 width="14"
                 height="14"
@@ -132,8 +129,8 @@ const HeroSection: React.FC = () => {
                 />
               </svg>
             </Link>
-            <Link href="/skin-concerns" className={styles.ctaSecondary}>
-              Explore Skin Concerns
+            <Link href={secondaryCtaUrl} className={styles.ctaSecondary}>
+              {secondaryCtaText}
             </Link>
           </div>
         </div>
