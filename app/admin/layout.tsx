@@ -61,6 +61,15 @@ const NAV = [
     ),
   },
   {
+    label: 'Ingredients', to: '/admin/ingredients',
+    icon: (
+      <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.75} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <path d="M12 2v20M2 12h20" />
+        <circle cx="12" cy="12" r="9" />
+      </svg>
+    ),
+  },
+  {
     label: 'Content', to: '/admin/cms',
     icon: (
       <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.75} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -108,6 +117,8 @@ const TITLES: Record<string, string> = {
   '/admin/blog/new': 'New Post',
   '/admin/concerns': 'Skin Concerns',
   '/admin/concerns/new': 'New Concern',
+  '/admin/ingredients': 'Ingredients',
+  '/admin/ingredients/new': 'New Ingredient',
   '/admin/cms': 'Content Management',
   '/admin/shipping': 'Shipping Zones',
   '/admin/discounts': 'Discounts',
