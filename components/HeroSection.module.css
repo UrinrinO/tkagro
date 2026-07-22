@@ -10,19 +10,12 @@
   flex-direction: column;
 }
 
-/* ── Background image ── */
+/* ── Background (placeholder gradient until licensed hero media is supplied) ── */
 .bgWrap {
   position: absolute;
   inset: 0;
   z-index: 0;
-}
-
-.bgImage {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center center;
-  display: block;
+  background: linear-gradient(135deg, var(--dark, #1c0f0a) 0%, var(--earth, #7a3b2e) 100%);
 }
 
 .bgOverlay {
