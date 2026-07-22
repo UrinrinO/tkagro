@@ -1,5 +1,9 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
+import Link from 'next/link';
+import { apiFetch } from '@/lib/apiFetch';
+
+const API_URL = '';
 
 type Tab = 'store' | 'payment' | 'shipping' | 'notifications';
 
@@ -9,6 +13,50 @@ const TABS: { key: Tab; label: string }[] = [
   { key: 'shipping',      label: 'Shipping' },
   { key: 'notifications', label: 'Notifications' },
 ];
+
+interface StoreInfo {
+  storeName: string;
+  contactEmail: string;
+  contactPhone: string;
+  address: string;
+  currency: string;
+}
+
+interface NotificationSettings {
+  orderConfirm: boolean;
+  shipUpdate: boolean;
+  lowStock: boolean;
+  weeklyReport: boolean;
+  notificationEmail: string;
+}
+
+const DEFAULT_STORE_INFO: StoreInfo = {
+  storeName: 'T.kays Agrocosmetics',
+  contactEmail: '',
+  contactPhone: '',
+  address: '',
+  currency: 'GBP (£)',
+};
+
+const DEFAULT_NOTIFICATIONS: NotificationSettings = {
+  orderConfirm: true,
+  shipUpdate: false,
+  lowStock: false,
+  weeklyReport: false,
+  notificationEmail: '',
+};
+
+async function saveBlock(key: string, value: unknown): Promise<void> {
+  const res = await apiFetch(`${API_URL}/api/admin/content/${key}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ value }),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error((err as any).message ?? 'Save failed');
+  }
+}
 
 const Toggle: React.FC<{ checked: boolean; onChange: () => void; label: string; desc?: string }> = ({ checked, onChange, label, desc }) => (
   <div className="flex items-start justify-between py-4 border-b border-gray-100 last:border-0">
@@ -28,13 +76,22 @@ const Toggle: React.FC<{ checked: boolean; onChange: () => void; label: string; 
   </div>
 );
 
-const Field: React.FC<{ label: string; id: string; defaultValue?: string; type?: string; placeholder?: string; hint?: string }> = ({ label, id, defaultValue, type = 'text', placeholder, hint }) => (
+const Field: React.FC<{
+  label: string;
+  id: string;
+  value: string;
+  onChange: (v: string) => void;
+  type?: string;
+  placeholder?: string;
+  hint?: string;
+}> = ({ label, id, value, onChange, type = 'text', placeholder, hint }) => (
   <div>
     <label htmlFor={id} className="block text-xs font-medium text-gray-700 mb-1.5">{label}</label>
     <input
       id={id}
       type={type}
-      defaultValue={defaultValue}
+      value={value}
+      onChange={(e) => onChange(e.target.value)}
       placeholder={placeholder}
       className="w-full px-3.5 py-2.5 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30"
     />
@@ -42,9 +99,99 @@ const Field: React.FC<{ label: string; id: string; defaultValue?: string; type?:
   </div>
 );
 
+const SaveBar: React.FC<{
+  saving: boolean;
+  saved: boolean;
+  onSave: () => void;
+  onReset: () => void;
+}> = ({ saving, saved, onSave, onReset }) => (
+  <div className="flex items-center gap-3 pt-2">
+    <button
+      type="button"
+      onClick={onSave}
+      disabled={saving}
+      className="px-5 py-2 bg-primary text-white text-sm font-medium rounded-lg hover:bg-primary/90 disabled:opacity-50 transition-colors"
+    >
+      {saving ? 'Saving…' : 'Save changes'}
+    </button>
+    <button
+      type="button"
+      onClick={onReset}
+      disabled={saving}
+      className="px-4 py-2 text-sm text-gray-500 hover:text-gray-800 transition-colors disabled:opacity-40"
+    >
+      Reset
+    </button>
+    {saved && (
+      <span className="text-xs text-green-600 font-medium flex items-center gap-1">
+        <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round">
+          <polyline points="20 6 9 17 4 12" />
+        </svg>
+        Saved
+      </span>
+    )}
+  </div>
+);
+
 const AdminSettings: React.FC = () => {
   const [tab, setTab] = useState<Tab>('store');
-  const [notifs, setNotifs] = useState({ orderConfirm: true, shipUpdate: true, weeklyReport: false, lowStock: true });
+  const [allContent, setAllContent] = useState<Record<string, unknown>>({});
+  const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState<string | null>(null);
+  const [storeInfo, setStoreInfo] = useState<StoreInfo>(DEFAULT_STORE_INFO);
+  const [notifications, setNotifications] = useState<NotificationSettings>(DEFAULT_NOTIFICATIONS);
+  const [saving, setSaving] = useState<string | null>(null);
+  const [saved, setSaved] = useState<string | null>(null);
+
+  const load = useCallback(async () => {
+    setLoading(true);
+    setLoadError(null);
+    try {
+      const res = await apiFetch(`${API_URL}/api/admin/content`);
+      if (!res.ok) throw new Error('Failed to load settings');
+      const json = await res.json();
+      setAllContent(json.data ?? {});
+    } catch (e) {
+      setLoadError((e as Error).message);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => { load(); }, [load]);
+
+  useEffect(() => {
+    if (loading) return;
+    setStoreInfo({ ...DEFAULT_STORE_INFO, ...(allContent['settings.store_info'] as Partial<StoreInfo>) });
+    setNotifications({ ...DEFAULT_NOTIFICATIONS, ...(allContent['settings.notifications'] as Partial<NotificationSettings>) });
+  }, [loading, allContent]);
+
+  async function save(key: string, value: unknown) {
+    setSaving(key);
+    setSaved(null);
+    try {
+      await saveBlock(key, value);
+      setSaved(key);
+      setTimeout(() => setSaved(null), 3000);
+    } catch (e) {
+      alert((e as Error).message);
+    } finally {
+      setSaving(null);
+    }
+  }
+
+  if (loading) {
+    return <div className="p-8 text-sm text-gray-400 animate-pulse">Loading settings…</div>;
+  }
+
+  if (loadError) {
+    return (
+      <div className="p-6 bg-red-50 border border-red-200 rounded-xl text-sm text-red-700">
+        Failed to load settings: {loadError}
+        <button onClick={load} className="ml-3 underline hover:no-underline">Retry</button>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-2xl space-y-5">
@@ -69,22 +216,51 @@ const AdminSettings: React.FC = () => {
         {tab === 'store' && (
           <div className="space-y-4">
             <h3 className="text-sm font-semibold text-gray-900">Store Information</h3>
-            <Field label="Store Name" id="storeName" defaultValue="T.kays Agrocosmetics" />
-            <Field label="Contact Email" id="storeEmail" type="email" defaultValue="hello@tkaysagro.com" />
-            <Field label="Phone Number" id="storePhone" type="tel" defaultValue="+44 7000 000000" />
+            <Field
+              label="Store Name"
+              id="storeName"
+              value={storeInfo.storeName}
+              onChange={(v) => setStoreInfo((s) => ({ ...s, storeName: v }))}
+            />
+            <Field
+              label="Contact Email"
+              id="storeEmail"
+              type="email"
+              value={storeInfo.contactEmail}
+              onChange={(v) => setStoreInfo((s) => ({ ...s, contactEmail: v }))}
+              placeholder="hello@tkaysagrocosmetics.com"
+            />
+            <Field
+              label="WhatsApp / Phone Number"
+              id="storePhone"
+              type="tel"
+              value={storeInfo.contactPhone}
+              onChange={(v) => setStoreInfo((s) => ({ ...s, contactPhone: v }))}
+              placeholder="233123456789"
+              hint="Digits only, with country code, no spaces or + sign — e.g. 233123456789. Powers both the displayed contact number and the WhatsApp chat link on the Contact page."
+            />
             <div>
               <label htmlFor="address" className="block text-xs font-medium text-gray-700 mb-1.5">Business Address</label>
               <textarea
                 id="address"
-                defaultValue="London, United Kingdom"
+                value={storeInfo.address}
+                onChange={(e) => setStoreInfo((s) => ({ ...s, address: e.target.value }))}
                 rows={2}
                 className="w-full px-3.5 py-2.5 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30 resize-none"
               />
             </div>
-            <Field label="Currency" id="currency" defaultValue="GBP (£)" />
-            <button type="button" className="px-5 py-2.5 bg-primary text-white text-sm font-medium rounded-lg hover:bg-primary-light transition-colors" onClick={() => alert('Settings saved')}>
-              Save Changes
-            </button>
+            <Field
+              label="Currency"
+              id="currency"
+              value={storeInfo.currency}
+              onChange={(v) => setStoreInfo((s) => ({ ...s, currency: v }))}
+            />
+            <SaveBar
+              saving={saving === 'settings.store_info'}
+              saved={saved === 'settings.store_info'}
+              onSave={() => save('settings.store_info', storeInfo)}
+              onReset={() => setStoreInfo({ ...DEFAULT_STORE_INFO, ...(allContent['settings.store_info'] as Partial<StoreInfo>) })}
+            />
           </div>
         )}
 
@@ -102,70 +278,27 @@ const AdminSettings: React.FC = () => {
               </div>
               <span className="ml-auto text-xs font-semibold text-indigo-700 bg-indigo-100 px-2.5 py-1 rounded-full flex-shrink-0">Active</span>
             </div>
-            <Field
-              label="Publishable Key"
-              id="stripePublishable"
-              placeholder="pk_test_… or pk_live_…"
-              hint="dashboard.stripe.com → Developers → API keys — safe to use in the frontend"
-            />
-            <Field
-              label="Secret Key"
-              id="stripeSecret"
-              type="password"
-              placeholder="sk_test_… or sk_live_…"
-              hint="Backend only — never expose this in the browser or commit to version control"
-            />
-            <Field
-              label="Webhook Signing Secret"
-              id="stripeWebhook"
-              type="password"
-              placeholder="whsec_…"
-              hint="dashboard.stripe.com → Developers → Webhooks → your endpoint → Signing secret"
-            />
-            <div>
-              <label className="block text-xs font-medium text-gray-700 mb-1.5">Environment</label>
-              <div className="flex gap-2">
-                {['Test Mode', 'Live Mode'].map((env) => (
-                  <button
-                    key={env}
-                    type="button"
-                    className={`flex-1 py-2 rounded-lg text-xs font-medium border transition-colors ${
-                      env === 'Test Mode' ? 'bg-primary text-white border-primary' : 'border-gray-200 text-gray-600 hover:bg-gray-50'
-                    }`}
-                  >
-                    {env}
-                  </button>
-                ))}
-              </div>
-            </div>
-            <button type="button" className="px-5 py-2.5 bg-primary text-white text-sm font-medium rounded-lg hover:bg-primary-light transition-colors" onClick={() => alert('Payment settings saved')}>
-              Save
-            </button>
+            <p className="text-sm text-gray-600">
+              Payment keys are configured on the server by your developer — they are not editable here. This keeps
+              secret keys out of the application database and admin dashboard.
+            </p>
           </div>
         )}
 
         {/* ── Shipping ── */}
         {tab === 'shipping' && (
-          <div className="space-y-4">
+          <div className="space-y-5">
             <h3 className="text-sm font-semibold text-gray-900">Shipping Rates</h3>
-            <Field label="Free Shipping Threshold (£)" id="freeShipThreshold" defaultValue="50" hint="Orders over this amount qualify for free standard shipping" />
-            <Field label="Standard Shipping Rate (£)" id="standardRate" defaultValue="3.99" />
-            <Field label="Express Shipping Rate (£)" id="expressRate" defaultValue="7.99" />
-            <Field label="International Rate (£)" id="intlRate" defaultValue="12.99" />
-            <div>
-              <label className="block text-xs font-medium text-gray-700 mb-1.5">Shipping Regions</label>
-              <div className="space-y-2">
-                {['United Kingdom', 'Europe', 'Rest of World'].map((r) => (
-                  <label key={r} className="flex items-center gap-2.5 text-sm text-gray-700 cursor-pointer">
-                    <input type="checkbox" defaultChecked className="rounded border-gray-300 text-primary focus:ring-primary" />
-                    {r}
-                  </label>
-                ))}
-              </div>
-            </div>
-            <button type="button" className="px-5 py-2.5 bg-primary text-white text-sm font-medium rounded-lg hover:bg-primary-light transition-colors" onClick={() => alert('Shipping settings saved')}>
-              Save
-            </button>
+            <p className="text-sm text-gray-600">
+              Shipping rates are managed on the Shipping page, where you can set up zones by country with their own
+              base price, per-gram rate, and free-shipping threshold.
+            </p>
+            <Link
+              href="/admin/shipping"
+              className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-white text-sm font-medium rounded-lg hover:bg-primary/90 transition-colors"
+            >
+              Go to Shipping →
+            </Link>
           </div>
         )}
 
@@ -176,33 +309,46 @@ const AdminSettings: React.FC = () => {
             <Toggle
               label="Order Confirmation"
               desc="Send a confirmation email to customers when an order is placed"
-              checked={notifs.orderConfirm}
-              onChange={() => setNotifs((n) => ({ ...n, orderConfirm: !n.orderConfirm }))}
+              checked={notifications.orderConfirm}
+              onChange={() => setNotifications((n) => ({ ...n, orderConfirm: !n.orderConfirm }))}
             />
             <Toggle
               label="Shipping Update"
               desc="Notify customers when their order is shipped with tracking info"
-              checked={notifs.shipUpdate}
-              onChange={() => setNotifs((n) => ({ ...n, shipUpdate: !n.shipUpdate }))}
+              checked={notifications.shipUpdate}
+              onChange={() => setNotifications((n) => ({ ...n, shipUpdate: !n.shipUpdate }))}
             />
             <Toggle
               label="Low Stock Alert"
               desc="Send an admin alert when a product has fewer than 5 units in stock"
-              checked={notifs.lowStock}
-              onChange={() => setNotifs((n) => ({ ...n, lowStock: !n.lowStock }))}
+              checked={notifications.lowStock}
+              onChange={() => setNotifications((n) => ({ ...n, lowStock: !n.lowStock }))}
             />
             <Toggle
               label="Weekly Sales Report"
               desc="Receive a weekly email summary of sales, revenue, and top products"
-              checked={notifs.weeklyReport}
-              onChange={() => setNotifs((n) => ({ ...n, weeklyReport: !n.weeklyReport }))}
+              checked={notifications.weeklyReport}
+              onChange={() => setNotifications((n) => ({ ...n, weeklyReport: !n.weeklyReport }))}
             />
             <div className="mt-5">
-              <Field label="Notification Email" id="notifEmail" type="email" defaultValue="ogidiamau@gmail.com" />
+              <Field
+                label="Notification Email"
+                id="notifEmail"
+                type="email"
+                value={notifications.notificationEmail}
+                onChange={(v) => setNotifications((n) => ({ ...n, notificationEmail: v }))}
+                placeholder={storeInfo.contactEmail || 'you@example.com'}
+                hint="Leave blank to use the Contact Email from Store Info."
+              />
             </div>
-            <button type="button" className="mt-4 px-5 py-2.5 bg-primary text-white text-sm font-medium rounded-lg hover:bg-primary-light transition-colors" onClick={() => alert('Notification settings saved')}>
-              Save
-            </button>
+            <div className="mt-4">
+              <SaveBar
+                saving={saving === 'settings.notifications'}
+                saved={saved === 'settings.notifications'}
+                onSave={() => save('settings.notifications', notifications)}
+                onReset={() => setNotifications({ ...DEFAULT_NOTIFICATIONS, ...(allContent['settings.notifications'] as Partial<NotificationSettings>) })}
+              />
+            </div>
           </div>
         )}
       </div>
