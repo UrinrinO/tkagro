@@ -6,8 +6,9 @@
 
 import React from 'react';
 import styles from './TrustStrip.module.css';
+import type { TrustItem } from '@/hooks/useHomepageContent';
 
-const ITEMS = [
+const DEFAULT_ITEMS = [
   'Vegan',
   'Herbal',
   'Organic',
@@ -18,8 +19,9 @@ const ITEMS = [
   'DICE Values',
 ];
 
-const TrustStrip: React.FC = () => {
-  const doubled = [...ITEMS, ...ITEMS];
+const TrustStrip: React.FC<{ items?: TrustItem[] }> = ({ items }) => {
+  const labels = items && items.length > 0 ? items.map((i) => i.text) : DEFAULT_ITEMS;
+  const doubled = [...labels, ...labels];
 
   return (
     <div className={styles.strip} aria-label="Brand values" role="marquee">

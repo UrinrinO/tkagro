@@ -35,7 +35,7 @@ const HomePage: React.FC = () => {
       />
 
       <HeroSection content={content.hero} />
-      <TrustStrip />
+      <TrustStrip items={content.trustStrip} />
       <ConcernGrid />
       <BestSellersSection />
       <WhyTkaysSection />
