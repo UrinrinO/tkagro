@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabase-server';
+import { getNotificationRecipient, sendLowStockAlert } from '@/lib/resend';
 
 async function requireAdmin(request: NextRequest) {
   const token = request.headers.get('authorization')?.split(' ')[1];
@@ -64,5 +65,27 @@ export async function POST(request: NextRequest) {
     in_stock: inStock ?? true, is_new: isNew ?? false, is_best_seller: isBestSeller ?? false,
   }).select().single();
   if (error) return NextResponse.json({ success: false, message: error.message }, { status: 400 });
+
+  if (body.stockCount !== undefined && parseInt(body.stockCount, 10) < 5) {
+    const { data: notifSettings } = await supabase
+      .from('content_blocks')
+      .select('value')
+      .eq('key', 'settings.notifications')
+      .single();
+    const lowStockEnabled = (notifSettings?.value as any)?.lowStock === true;
+
+    if (lowStockEnabled) {
+      getNotificationRecipient().then((recipientEmail) => {
+        if (!recipientEmail) return;
+        return sendLowStockAlert({
+          recipientEmail,
+          productName: data.name,
+          stockCount: data.stock_count,
+          productId: data.id,
+        });
+      }).catch((err) => console.error('[resend] low stock alert failed:', err));
+    }
+  }
+
   return NextResponse.json({ success: true, data: { product: toDTO(data) } }, { status: 201 });
 }
