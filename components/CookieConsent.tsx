@@ -1,6 +1,7 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { CONSENT_UPDATED_EVENT } from './HubspotChat';
 
 const CONSENT_KEY = 'tkays_cookie_consent';
 const ANALYTICS_KEY = 'tkays_analytics_consent';
@@ -27,6 +28,7 @@ const CookieConsent: React.FC = () => {
     localStorage.setItem(ANALYTICS_KEY, String(preferences.analytics));
     localStorage.setItem(MARKETING_KEY, String(preferences.marketing));
     setVisible(false);
+    window.dispatchEvent(new Event(CONSENT_UPDATED_EVENT));
   };
 
   const acceptAll = () => saveAndClose('accepted', { analytics: true, marketing: true });
@@ -57,8 +59,8 @@ const CookieConsent: React.FC = () => {
               checkout, account session, and your cookie preference. These cannot be turned off.
             </p>
             <p className="text-sm text-gray-600 leading-relaxed mb-5">
-              We do not currently use analytics or marketing cookies. If we add them in the future, we
-              will ask for your consent first.{' '}
+              With your consent, we also use <strong>marketing cookies</strong> to power our live chat
+              widget. We do not currently use analytics cookies.{' '}
               <Link href="/cookies" className="text-primary underline hover:text-primary/80 transition-colors">
                 Cookie Policy
               </Link>
@@ -148,7 +150,7 @@ const CookieConsent: React.FC = () => {
                 <div>
                   <p className="text-sm font-semibold text-brand-dark">Marketing</p>
                   <p className="text-xs text-gray-500 mt-0.5 leading-relaxed">
-                    Used to measure advertising performance and show relevant adverts. Not currently active.
+                    Powers our live chat widget and helps us measure advertising performance.
                   </p>
                 </div>
                 <button

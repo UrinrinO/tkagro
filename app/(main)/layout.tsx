@@ -5,6 +5,7 @@ import Header from '@/components/Navigation/Header';
 import Footer from '@/components/Footer/Footer';
 import CookieConsent from '@/components/CookieConsent';
 import CartDrawer from '@/components/Cart/CartDrawer';
+import HubspotChat from '@/components/HubspotChat';
 
 export default function MainLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -21,6 +22,7 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
       </footer>
       <CartDrawer />
       <CookieConsent />
+      <HubspotChat />
     </div>
   );
 }
