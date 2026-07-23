@@ -5,15 +5,21 @@
  * Full Tailwind styling — no CSS module dependency.
  */
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import PageSEO from '@/components/SEO/PageSEO';
 
 import heroBanner   from '../assets/images/aesthetics/beauty-soft.jpg';
 import founderPhoto from '../assets/images/founder-pictures/founder-tijesunimi-professional.jpg';
 
-/* ── Static content ── */
-const BRAND_STORY = {
+interface BrandStory { intro: string; body: string; }
+interface FounderContent { name: string; title: string; bio: string; }
+interface BalancedWellnessContent { quote: string; }
+interface VHONItem { letter: string; word: string; desc: string; }
+interface DICEItem { letter: string; word: string; desc: string; }
+
+/* ── Default content (shown until the CMS has real data saved) ── */
+const DEFAULT_BRAND_STORY: BrandStory = {
   intro: `T.kays Agrocosmetics was born from a deeply personal journey — one rooted in the belief that nature holds the answers to our most pressing wellness needs. Founded by Tijesunimi Olakojo, the brand emerged from years of lived experience navigating skin challenges, mental wellness, and the search for products that truly honour the body.`,
   body: `What began as a personal quest to find clean, effective, plant-based solutions grew into a mission to share those discoveries with the world. T.kays Agrocosmetics bridges the gap between traditional botanical wisdom and modern cosmetic science, crafting formulations that are as kind to the earth as they are to your skin.
 
@@ -22,18 +28,24 @@ Every product in our range is thoughtfully developed with a commitment to transp
 Our name carries meaning: "Agro" speaks to our deep connection with the land and its botanical gifts; "Cosmetics" reflects our dedication to beauty that goes beyond the surface. Together, they represent our promise — products grown from nature, crafted with care, and designed for real people living real lives.`,
 };
 
-const FOUNDER_BIO = `Tijesunimi Olakojo is the founder and formulator behind T.kays Agrocosmetics. A passionate advocate for natural wellness, she combines her background in botanical science with a deep commitment to inclusivity and community. Driven by her own skin journey and a desire to create products that work for every skin tone and type, Tijesunimi built T.kays from the ground up — formulating each product with intention, integrity, and love.`;
+const DEFAULT_FOUNDER: FounderContent = {
+  name: 'Tijesunimi Olakojo',
+  title: 'Founder & Formulator',
+  bio: `Tijesunimi Olakojo is the founder and formulator behind T.kays Agrocosmetics. A passionate advocate for natural wellness, she combines her background in botanical science with a deep commitment to inclusivity and community. Driven by her own skin journey and a desire to create products that work for every skin tone and type, Tijesunimi built T.kays from the ground up — formulating each product with intention, integrity, and love.`,
+};
 
-const BALANCED_WELLNESS = `"Balanced Wellness" is more than a tagline — it is our philosophy. True wellness is not one-dimensional. It encompasses the health of your skin, the clarity of your mind, the nourishment of your body, and the harmony of your spirit. At T.kays Agrocosmetics, we believe that when you care for yourself holistically — inside and out — you unlock a state of balance that radiates from within.`;
+const DEFAULT_BALANCED_WELLNESS: BalancedWellnessContent = {
+  quote: `"Balanced Wellness" is more than a tagline — it is our philosophy. True wellness is not one-dimensional. It encompasses the health of your skin, the clarity of your mind, the nourishment of your body, and the harmony of your spirit. At T.kays Agrocosmetics, we believe that when you care for yourself holistically — inside and out — you unlock a state of balance that radiates from within.`,
+};
 
-const VHON = [
+const DEFAULT_VHON: VHONItem[] = [
   { letter: 'V', word: 'Vegan',   desc: 'No animal-derived ingredients. Ever. Our formulations are 100% cruelty-free and kind to all living beings.' },
   { letter: 'H', word: 'Herbal',  desc: 'Rooted in botanical tradition, we harness the potency of herbs and plant extracts proven over centuries.' },
   { letter: 'O', word: 'Organic', desc: 'We prioritise certified organic ingredients, free from synthetic pesticides and harmful chemicals.' },
   { letter: 'N', word: 'Natural', desc: 'Sourced from nature, not a laboratory. Clean, recognisable ingredients you can trust.' },
 ];
 
-const DICE = [
+const DEFAULT_DICE: DICEItem[] = [
   { letter: 'D', word: 'Diversity',   desc: 'We celebrate every skin tone, background, and identity. Our products are formulated for all.' },
   { letter: 'I', word: 'Inclusivity', desc: 'Wellness should be accessible to everyone. We design with every body in mind.' },
   { letter: 'C', word: 'Community',   desc: "We are more than a brand — a collective of people committed to supporting one another's wellness journeys." },
@@ -41,6 +53,29 @@ const DICE = [
 ];
 
 const AboutPage: React.FC = () => {
+  const [brandStory, setBrandStory] = useState<BrandStory>(DEFAULT_BRAND_STORY);
+  const [founder, setFounder] = useState<FounderContent>(DEFAULT_FOUNDER);
+  const [balancedWellness, setBalancedWellness] = useState<BalancedWellnessContent>(DEFAULT_BALANCED_WELLNESS);
+  const [vhon, setVhon] = useState<VHONItem[]>(DEFAULT_VHON);
+  const [dice, setDice] = useState<DICEItem[]>(DEFAULT_DICE);
+
+  useEffect(() => {
+    fetch('/api/content?keys=about.brand_story,about.founder,about.balanced_wellness,about.vhon,about.dice')
+      .then((r) => (r.ok ? r.json() : null))
+      .then((json) => {
+        const data = json?.data;
+        if (!data) return;
+        if (data['about.brand_story']) setBrandStory((s) => ({ ...s, ...data['about.brand_story'] }));
+        if (data['about.founder']) setFounder((f) => ({ ...f, ...data['about.founder'] }));
+        if (data['about.balanced_wellness']) setBalancedWellness((b) => ({ ...b, ...data['about.balanced_wellness'] }));
+        if (Array.isArray(data['about.vhon']) && data['about.vhon'].length > 0) setVhon(data['about.vhon']);
+        if (Array.isArray(data['about.dice']) && data['about.dice'].length > 0) setDice(data['about.dice']);
+      })
+      .catch(() => {
+        // Keep defaults — non-critical enhancement fetch for a marketing page.
+      });
+  }, []);
+
   return (
     <>
       <PageSEO
@@ -91,9 +126,9 @@ const AboutPage: React.FC = () => {
               Where Nature Meets Purpose
             </h2>
             <p className="text-brand-grey text-lg leading-relaxed mb-6 font-medium text-brand-dark/80">
-              {BRAND_STORY.intro}
+              {brandStory.intro}
             </p>
-            {BRAND_STORY.body.split('\n\n').map((para, i) => (
+            {brandStory.body.split('\n\n').map((para, i) => (
               <p key={i} className="text-brand-grey leading-relaxed mb-5">
                 {para}
               </p>
@@ -128,8 +163,8 @@ const AboutPage: React.FC = () => {
                 </div>
                 {/* Floating accent card */}
                 <div className="absolute -bottom-5 -right-5 bg-white rounded-2xl p-5 shadow-xl max-w-48">
-                  <p className="font-accent text-sm italic text-brand-grey">Founder & Formulator</p>
-                  <p className="font-heading text-base font-bold text-brand-dark mt-1">Tijesunimi Olakojo</p>
+                  <p className="font-accent text-sm italic text-brand-grey">{founder.title}</p>
+                  <p className="font-heading text-base font-bold text-brand-dark mt-1">{founder.name}</p>
                 </div>
               </div>
 
@@ -137,12 +172,12 @@ const AboutPage: React.FC = () => {
               <div>
                 <span className="block text-xs font-bold tracking-widest uppercase text-accent mb-4">Meet the Founder</span>
                 <h2 id="founder-heading" className="font-heading text-3xl lg:text-4xl font-bold text-brand-dark mb-6">
-                  Tijesunimi Olakojo
+                  {founder.name}
                 </h2>
-                <p className="text-brand-grey leading-relaxed mb-8">{FOUNDER_BIO}</p>
+                <p className="text-brand-grey leading-relaxed mb-8">{founder.bio}</p>
                 <div className="border-l-4 border-accent pl-5">
                   <p className="font-heading text-xl italic text-primary font-semibold">Tijesunimi</p>
-                  <p className="text-xs text-brand-grey mt-1 tracking-wide">Founder & Formulator, T.kays Agrocosmetics</p>
+                  <p className="text-xs text-brand-grey mt-1 tracking-wide">{founder.title}, T.kays Agrocosmetics</p>
                 </div>
               </div>
             </div>
@@ -198,7 +233,7 @@ const AboutPage: React.FC = () => {
                   </div>
                 </div>
                 <ul className="space-y-5">
-                  {VHON.map(({ letter, word, desc }) => (
+                  {vhon.map(({ letter, word, desc }) => (
                     <li key={letter} className="flex gap-4">
                       <span className="flex-shrink-0 w-9 h-9 rounded-full bg-primary-pale flex items-center justify-center font-heading font-bold text-primary text-sm" aria-hidden="true">
                         {letter}
@@ -222,7 +257,7 @@ const AboutPage: React.FC = () => {
                   </div>
                 </div>
                 <ul className="space-y-5">
-                  {DICE.map(({ letter, word, desc }) => (
+                  {dice.map(({ letter, word, desc }) => (
                     <li key={letter} className="flex gap-4">
                       <span className="flex-shrink-0 w-9 h-9 rounded-full bg-accent-pale flex items-center justify-center font-heading font-bold text-accent text-sm" aria-hidden="true">
                         {letter}
@@ -247,7 +282,7 @@ const AboutPage: React.FC = () => {
               Balanced Wellness
             </h2>
             <blockquote className="text-white/70 text-base lg:text-lg leading-relaxed mb-10">
-              {BALANCED_WELLNESS}
+              {balancedWellness.quote}
             </blockquote>
             <div className="w-16 h-px bg-accent mx-auto mb-6" aria-hidden="true" />
             <p className="font-accent italic text-accent text-lg">— T.kays Agrocosmetics</p>
