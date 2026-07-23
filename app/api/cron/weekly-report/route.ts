@@ -76,11 +76,15 @@ export async function GET(request: NextRequest) {
   const emails = [...new Set(orderRows.map((o) => o.customer_email))];
   let newCustomers = 0;
   if (emails.length > 0) {
-    const { data: firstOrders } = await supabase
+    const { data: firstOrders, error: firstOrdersError } = await supabase
       .from('orders')
       .select('customer_email, created_at')
       .in('customer_email', emails)
       .order('created_at', { ascending: true });
+
+    if (firstOrdersError) {
+      return NextResponse.json({ success: false, message: firstOrdersError.message }, { status: 500 });
+    }
 
     const firstOrderByEmail = new Map<string, string>();
     for (const o of firstOrders ?? []) {
