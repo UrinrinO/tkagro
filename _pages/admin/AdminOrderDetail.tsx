@@ -21,6 +21,7 @@ interface OrderData {
   order_number: string;
   created_at: string;
   status: string;
+  tracking_number: string | null;
   customer_name: string;
   customer_email: string;
   customer_phone: string | null;
@@ -41,6 +42,7 @@ const AdminOrderDetail: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [status, setStatus] = useState('');
+  const [trackingNumber, setTrackingNumber] = useState('');
   const [updating, setUpdating] = useState(false);
   const [updateMsg, setUpdateMsg] = useState<string | null>(null);
 
@@ -51,20 +53,22 @@ const AdminOrderDetail: React.FC = () => {
         if (!json.success) throw new Error(json.message);
         setOrder(json.data.order);
         setStatus(json.data.order.status);
+        setTrackingNumber(json.data.order.tracking_number ?? '');
       })
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));
   }, [id]);
 
   const handleStatusUpdate = async () => {
-    if (!order || status === order.status) return;
+    if (!order) return;
+    if (status === order.status && trackingNumber === (order.tracking_number ?? '')) return;
     setUpdating(true);
     setUpdateMsg(null);
     try {
       const res = await apiFetch(`${API_URL}/api/admin/orders/${id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ status }),
+        body: JSON.stringify({ status, trackingNumber }),
       });
       const json = await res.json();
       if (!json.success) throw new Error(json.message);
@@ -101,8 +105,19 @@ const AdminOrderDetail: React.FC = () => {
             className="text-sm border border-gray-200 rounded-lg px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-primary/30">
             {ALL_STATUSES.map((s) => <option key={s} value={s}>{s}</option>)}
           </select>
-          <button type="button" onClick={handleStatusUpdate} disabled={updating || status === order.status}
-            className="px-4 py-1.5 bg-primary text-white text-sm font-medium rounded-lg hover:bg-primary-light transition-colors disabled:opacity-40">
+          <input
+            type="text"
+            value={trackingNumber}
+            onChange={(e) => setTrackingNumber(e.target.value)}
+            placeholder="Tracking number (optional)"
+            className="text-sm border border-gray-200 rounded-lg px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-primary/30 w-48"
+          />
+          <button
+            type="button"
+            onClick={handleStatusUpdate}
+            disabled={updating || (status === order.status && trackingNumber === (order.tracking_number ?? ''))}
+            className="px-4 py-1.5 bg-primary text-white text-sm font-medium rounded-lg hover:bg-primary-light transition-colors disabled:opacity-40"
+          >
             {updating ? 'Saving…' : 'Update'}
           </button>
         </div>
