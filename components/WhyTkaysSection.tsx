@@ -5,6 +5,7 @@
 
 import React from 'react';
 import './WhyTkaysSection.css';
+import type { WhyItem } from '@/hooks/useHomepageContent';
 
 interface TrustPoint {
   id: string;
@@ -58,7 +59,17 @@ const TRUST_POINTS: TrustPoint[] = [
   },
 ];
 
-const WhyTkaysSection: React.FC = () => {
+const WhyTkaysSection: React.FC<{ items?: WhyItem[] }> = ({ items }) => {
+  const points: TrustPoint[] = TRUST_POINTS.map((point, i) => {
+    const override = items?.[i];
+    if (!override) return point;
+    return {
+      ...point,
+      heading: override.heading || point.heading,
+      text: override.text || point.text,
+    };
+  });
+
   return (
     <section className="why-tkays-section" aria-labelledby="why-tkays-heading">
       <div className="why-tkays-container">
@@ -74,7 +85,7 @@ const WhyTkaysSection: React.FC = () => {
         </div>
 
         <ul className="why-tkays-grid" role="list">
-          {TRUST_POINTS.map((point) => (
+          {points.map((point) => (
             <li key={point.id} className="why-tkays-card">
               <span className="why-tkays-icon">{point.icon}</span>
               <h3 className="why-tkays-card-heading">{point.heading}</h3>

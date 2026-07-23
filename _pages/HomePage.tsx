@@ -38,7 +38,7 @@ const HomePage: React.FC = () => {
       <TrustStrip items={content.trustStrip} />
       <ConcernGrid />
       <BestSellersSection />
-      <WhyTkaysSection />
+      <WhyTkaysSection items={content.whyTkays} />
       <TestimonialsSection />
 
       {/* Community UGC feed */}
