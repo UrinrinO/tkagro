@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabase-server';
+import { getNotificationRecipient, sendLowStockAlert } from '@/lib/resend';
 
 async function requireAdmin(request: NextRequest) {
   const token = request.headers.get('authorization')?.split(' ')[1];
@@ -40,6 +41,10 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
 
   const body = await request.json();
   const { name, tagline, shortDescription, description, price, compareAtPrice, category, concern, imageUrl, weightGrams, inStock, isNew, isBestSeller } = body;
+
+  const { data: existing } = await supabase.from('products').select('stock_count').eq('id', params.id).single();
+  const previousStockCount = existing?.stock_count;
+
   const updates: Record<string, any> = {};
   if (name !== undefined) { updates.name = name; updates.slug = slugify(name); }
   if (tagline !== undefined) updates.tagline = tagline;
@@ -58,6 +63,33 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
 
   const { data, error } = await supabase.from('products').update(updates).eq('id', params.id).select().single();
   if (error) return NextResponse.json({ success: false, message: error.message }, { status: 400 });
+
+  if (
+    body.stockCount !== undefined &&
+    body.stockCount !== null &&
+    parseInt(body.stockCount, 10) < 5 &&
+    (previousStockCount === null || previousStockCount === undefined || previousStockCount >= 5)
+  ) {
+    const { data: notifSettings } = await supabase
+      .from('content_blocks')
+      .select('value')
+      .eq('key', 'settings.notifications')
+      .single();
+    const lowStockEnabled = (notifSettings?.value as any)?.lowStock === true;
+
+    if (lowStockEnabled) {
+      getNotificationRecipient().then((recipientEmail) => {
+        if (!recipientEmail) return;
+        return sendLowStockAlert({
+          recipientEmail,
+          productName: data.name,
+          stockCount: data.stock_count,
+          productId: data.id,
+        });
+      }).catch((err) => console.error('[resend] low stock alert failed:', err));
+    }
+  }
+
   return NextResponse.json({ success: true, data: { product: toDTO(data) } });
 }
 
