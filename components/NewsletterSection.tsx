@@ -4,6 +4,7 @@
  */
 
 import React, { useState, useId } from 'react';
+import type { NewsletterContent } from '@/hooks/useHomepageContent';
 
 type SubmitState = 'idle' | 'submitting' | 'success' | 'error';
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -15,7 +16,14 @@ const PERKS = [
   { icon: '📖', label: 'Ingredient guides' },
 ];
 
-const NewsletterSection: React.FC = () => {
+const NewsletterSection: React.FC<{ content?: Partial<NewsletterContent> }> = ({ content }) => {
+  const heading = content?.heading;
+  const subtext =
+    content?.subtext ||
+    'Weekly skincare rituals, ingredient spotlights, and first access to every T.kays drop — straight to your inbox. No noise. No spam.';
+  const placeholder = content?.placeholder || 'Your email address';
+  const buttonText = content?.buttonText || 'Subscribe Free →';
+
   const [email, setEmail] = useState('');
   const [submitState, setSubmitState] = useState<SubmitState>('idle');
   const [errorMessage, setErrorMessage] = useState('');
@@ -80,19 +88,27 @@ const NewsletterSection: React.FC = () => {
         </div>
 
         {/* Heading */}
-        <h2
-          id="newsletter-heading"
-          className="font-heading text-5xl lg:text-7xl font-bold text-white leading-[1.1] mb-5"
-        >
-          Good skin starts
-          <br />
-          with{' '}
-          <em className="text-accent font-heading">good habits</em>
-        </h2>
+        {heading ? (
+          <h2
+            id="newsletter-heading"
+            className="font-heading text-5xl lg:text-7xl font-bold text-white leading-[1.1] mb-5"
+          >
+            {heading}
+          </h2>
+        ) : (
+          <h2
+            id="newsletter-heading"
+            className="font-heading text-5xl lg:text-7xl font-bold text-white leading-[1.1] mb-5"
+          >
+            Good skin starts
+            <br />
+            with{' '}
+            <em className="text-accent font-heading">good habits</em>
+          </h2>
+        )}
 
         <p className="text-white/60 text-lg leading-relaxed mb-10 max-w-xl mx-auto">
-          Weekly skincare rituals, ingredient spotlights, and first access to every
-          T.kays drop — straight to your inbox. No noise. No spam.
+          {subtext}
         </p>
 
         {/* Perk chips */}
@@ -139,7 +155,7 @@ const NewsletterSection: React.FC = () => {
                   setEmail(e.target.value);
                   if (validationError) setValidationError('');
                 }}
-                placeholder="Your email address"
+                placeholder={placeholder}
                 disabled={submitState === 'submitting'}
                 autoComplete="email"
                 aria-invalid={!!validationError}
@@ -158,7 +174,7 @@ const NewsletterSection: React.FC = () => {
               aria-busy={submitState === 'submitting'}
               className="flex-shrink-0 bg-accent hover:bg-accent-light text-brand-dark font-bold text-sm tracking-wide px-8 py-4 rounded-full transition-all duration-200 disabled:opacity-60 whitespace-nowrap shadow-lg shadow-accent/20"
             >
-              {submitState === 'submitting' ? 'Subscribing…' : 'Subscribe Free →'}
+              {submitState === 'submitting' ? 'Subscribing…' : buttonText}
             </button>
           </form>
         )}

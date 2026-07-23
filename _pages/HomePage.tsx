@@ -89,7 +89,7 @@ const HomePage: React.FC = () => {
         </div>
       </section>
 
-      <NewsletterSection />
+      <NewsletterSection content={content.newsletter} />
     </>
   );
 };
