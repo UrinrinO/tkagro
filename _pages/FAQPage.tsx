@@ -10,7 +10,7 @@
  * - Accessible: uses aria-expanded, aria-controls, role="region"
  */
 
-import React, { useState, useMemo, useCallback, useId } from "react";
+import React, { useState, useEffect, useMemo, useCallback, useId } from "react";
 import { FAQ_ITEMS, type FAQItem } from "../constants/faq";
 import styles from "./FAQPage.module.css";
 
@@ -130,11 +130,24 @@ const FAQPage: React.FC = () => {
   const [openIndex, setOpenIndex] = useState<number>(-1);
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
+  const [faqItems, setFaqItems] = useState<FAQItem[]>(FAQ_ITEMS);
+
+  useEffect(() => {
+    fetch("/api/content/faqs")
+      .then((r) => (r.ok ? r.json() : null))
+      .then((json) => {
+        const value = json?.data?.value;
+        if (Array.isArray(value) && value.length > 0) setFaqItems(value);
+      })
+      .catch(() => {
+        // Keep the default FAQ_ITEMS — non-critical enhancement fetch.
+      });
+  }, []);
 
   // Derive unique categories from FAQ items
   const categories = useMemo(
-    () => Array.from(new Set(FAQ_ITEMS.map((item) => item.category))),
-    []
+    () => Array.from(new Set(faqItems.map((item) => item.category))),
+    [faqItems]
   );
 
   // Client-side filter: matches query against question and answer text,
@@ -142,7 +155,7 @@ const FAQPage: React.FC = () => {
   const filteredItems = useMemo<FAQItem[]>(() => {
     const query = searchQuery.trim().toLowerCase();
 
-    return FAQ_ITEMS.filter((item) => {
+    return faqItems.filter((item) => {
       const matchesCategory =
         activeCategory === null || item.category === activeCategory;
 
@@ -154,7 +167,7 @@ const FAQPage: React.FC = () => {
 
       return matchesCategory && matchesSearch;
     });
-  }, [searchQuery, activeCategory]);
+  }, [faqItems, searchQuery, activeCategory]);
 
   // Toggle accordion: close if already open, open new one
   const handleToggle = useCallback((index: number) => {
@@ -246,9 +259,9 @@ const FAQPage: React.FC = () => {
 
         {/* Results count */}
         <p className={styles.resultsCount} aria-live="polite" aria-atomic="true">
-          {filteredItems.length === FAQ_ITEMS.length
-            ? `${FAQ_ITEMS.length} questions`
-            : `${filteredItems.length} of ${FAQ_ITEMS.length} questions`}
+          {filteredItems.length === faqItems.length
+            ? `${faqItems.length} questions`
+            : `${filteredItems.length} of ${faqItems.length} questions`}
           {activeCategory && ` in "${activeCategory}"`}
           {searchQuery && ` matching "${searchQuery}"`}
         </p>
