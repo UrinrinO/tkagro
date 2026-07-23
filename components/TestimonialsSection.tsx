@@ -1,11 +1,20 @@
 'use client';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 import avatar1 from '../assets/images/testimonials/skin-acne-dark.jpg';
 import avatar2 from '../assets/images/testimonials/skin-hyperpigmentation-chest.jpg';
 import avatar3 from '../assets/images/testimonials/skin-back-white.jpg';
 
-const REVIEWS = [
+interface Review {
+  id: string;
+  name: string;
+  location: string;
+  avatar?: string;
+  rating: number;
+  text: string;
+}
+
+const DEFAULT_REVIEWS: Review[] = [
   {
     id: '1',
     name: 'Adaeze O.',
@@ -32,6 +41,16 @@ const REVIEWS = [
   },
 ];
 
+function getInitials(name: string): string {
+  return name
+    .split(' ')
+    .map((part) => part[0])
+    .filter(Boolean)
+    .slice(0, 2)
+    .join('')
+    .toUpperCase();
+}
+
 const Stars: React.FC<{ count: number }> = ({ count }) => (
   <div className="flex items-center gap-0.5" aria-label={`${count} out of 5 stars`}>
     {Array.from({ length: 5 }).map((_, i) => (
@@ -52,6 +71,20 @@ const Stars: React.FC<{ count: number }> = ({ count }) => (
 );
 
 const TestimonialsSection: React.FC = () => {
+  const [reviews, setReviews] = useState<Review[]>(DEFAULT_REVIEWS);
+
+  useEffect(() => {
+    fetch('/api/content/testimonials')
+      .then((r) => (r.ok ? r.json() : null))
+      .then((json) => {
+        const value = json?.data?.value;
+        if (Array.isArray(value) && value.length > 0) setReviews(value);
+      })
+      .catch(() => {
+        // Keep DEFAULT_REVIEWS — non-critical enhancement fetch.
+      });
+  }, []);
+
   return (
     <section className="bg-white py-20 px-6 lg:px-16" aria-labelledby="reviews-heading">
       <div className="max-w-7xl mx-auto">
@@ -66,7 +99,7 @@ const TestimonialsSection: React.FC = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {REVIEWS.map((review) => (
+          {reviews.map((review) => (
             <article
               key={review.id}
               className="flex flex-col bg-primary-pale rounded-2xl p-7 hover:shadow-md transition-shadow duration-200"
@@ -81,11 +114,20 @@ const TestimonialsSection: React.FC = () => {
 
               {/* Author */}
               <footer className="flex items-center gap-3">
-                <img
-                  src={review.avatar}
-                  alt={review.name}
-                  className="w-11 h-11 rounded-full object-cover flex-shrink-0 ring-2 ring-white"
-                />
+                {review.avatar ? (
+                  <img
+                    src={review.avatar}
+                    alt={review.name}
+                    className="w-11 h-11 rounded-full object-cover flex-shrink-0 ring-2 ring-white"
+                  />
+                ) : (
+                  <div
+                    className="w-11 h-11 rounded-full flex-shrink-0 ring-2 ring-white bg-primary-pale flex items-center justify-center text-sm font-heading font-bold text-primary"
+                    aria-hidden="true"
+                  >
+                    {getInitials(review.name)}
+                  </div>
+                )}
                 <div>
                   <p className="text-sm font-semibold text-brand-dark">{review.name}</p>
                   <p className="text-xs text-brand-grey">{review.location}</p>
